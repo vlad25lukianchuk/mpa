@@ -1,0 +1,32 @@
+#!/bin/bash
+
+BUILD_DIR=@CMAKE_CURRENT_BINARY_DIR@
+REPORT_DIR=${BUILD_DIR}/coverage_report
+lcov_base_command="lcov --rc lcov_branch_coverage=1"
+
+mkdir -p ${REPORT_DIR}
+
+# clean up
+${lcov_base_command} --zerocounters --directory ${BUILD_DIR}
+${lcov_base_command} -b ${BUILD_DIR} -i -c -d \
+    ${BUILD_DIR} -o ${REPORT_DIR}/base_coverage.info
+
+# run all tests
+ctest
+
+# capture coverage
+${lcov_base_command} -b ${BUILD_DIR} -c -d ${BUILD_DIR} -o \
+    ${REPORT_DIR}/tmp_coverage.info
+
+# combine coverage data
+${lcov_base_command} -a ${REPORT_DIR}/base_coverage.info -a \
+    ${REPORT_DIR}/tmp_coverage.info -o ${REPORT_DIR}/total_coverage.info
+
+# exclude unwanted data from report
+${lcov_base_command} --remove ${REPORT_DIR}/total_coverage.info \
+    '*/googletest*/*' \
+    '/usr/include/*' \
+    -o ${REPORT_DIR}/coverage.info
+
+genhtml --function-coverage --branch-coverage --legend --show-details \
+    ${REPORT_DIR}/coverage.info --output-directory ${REPORT_DIR}

@@ -1,0 +1,15 @@
+Language:        Cpp
+Standard:        c++14
+BasedOnStyle:    Google
+
+AllowShortBlocksOnASingleLine: false
+AllowShortCaseLabelsOnASingleLine: false
+AllowShortFunctionsOnASingleLine: Inline
+AllowShortIfStatementsOnASingleLine: false
+AllowShortLoopsOnASingleLine: false
+BreakConstructorInitializers: BeforeComma
+BreakBeforeBraces: Custom
+BraceWrapping:
+  AfterFunction: true
+ColumnLimit: 80
+
