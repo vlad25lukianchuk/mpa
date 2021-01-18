@@ -4,18 +4,14 @@
 #include <iostream>
 #include <string>
 
-namespace mpa {
+#include "mpanumber.h"
 
-enum class Sign { kPlus, kMinus };
+namespace mpa {
 
 class Integer {
  public:
   // TODO: Any other ctrs?
-  // 1) do we need implicit conversion?
-  // 2) do we need ctr's from the const char*?
-  // 3) to think about sign representation
   explicit Integer(std::string number);
-  const std::string& Value() const noexcept { return number_; }
 
   Integer& operator+=(const Integer& rhs) noexcept;
   Integer& operator-=(const Integer& rhs) noexcept;
@@ -26,9 +22,13 @@ class Integer {
   Integer& operator++() noexcept;
   Integer& operator--() noexcept;
 
+  // TODO: unary minus, unary plus, conversion operators?
+  // comparison operators, etc. a lot of TODO.
+
+  friend std::ostream& operator<<(std::ostream& ost, const Integer& number);
+
  private:
-  std::string number_;
-  Sign sign_{Sign::kPlus};
+  core::Number number_;
 };
 
 inline Integer operator+(Integer lhs, const Integer& rhs) noexcept
@@ -63,7 +63,7 @@ inline Integer operator++(Integer& lhs, int) noexcept
   return tmp;
 }
 
-Integer operator--(Integer& lhs, int) noexcept
+inline Integer operator--(Integer& lhs, int) noexcept
 {
   Integer tmp{lhs};
   --lhs;
@@ -72,7 +72,7 @@ Integer operator--(Integer& lhs, int) noexcept
 
 inline std::ostream& operator<<(std::ostream& ost, const Integer& number)
 {
-  return ost << number.Value();
+  return ost << number.number_;
 }
 
 std::istream& operator>>(std::istream& ist, Integer& number);

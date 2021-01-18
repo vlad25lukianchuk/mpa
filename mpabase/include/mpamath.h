@@ -3,6 +3,8 @@
 
 #include <string>
 
+#include "mpanumber.h"
+
 namespace mpa {
 namespace math {
 
@@ -18,8 +20,23 @@ constexpr int ToDec(char chr) noexcept
   return chr - kAsciiNumStart;
 }
 
-std::string Add(const std::string& larger, const std::string& smaller) noexcept;
-std::string Substract(const std::string& lhs, const std::string& rhs) noexcept;
+core::Number Add(const core::Number& lhs, const core::Number& rhs) noexcept;
+core::Number Subtract(const core::Number& lhs,
+                      const core::Number& rhs) noexcept;
+
+namespace impl {
+
+core::Number AddHelper(const core::Number& lhs,
+                       const core::Number& rhs) noexcept;
+core::Number SubtractHelper(const core::Number& lhs,
+                            const core::Number& rhs) noexcept;
+
+std::string AddImpl(const std::string& larger,
+                    const std::string& smaller) noexcept;
+std::string SubtractImpl(const std::string& lhs,
+                         const std::string& rhs) noexcept;
+
+}  // namespace impl
 
 }  // namespace math
 }  // namespace mpa

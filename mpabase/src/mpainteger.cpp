@@ -6,33 +6,25 @@
 
 #include "mpalog.h"
 #include "mpamath.h"
+#include "mpanumber.h"
 
 using std::string;
 
 namespace mpa {
 
-Integer::Integer(string number) : number_{std::move(number)}
+Integer::Integer(string number) : number_{core::CheckNumber(std::move(number))}
 {
-  // TODO: check signess?
 }
 
 Integer& Integer::operator+=(const Integer& rhs) noexcept
 {
-  if (number_.size() > rhs.Value().size()) {
-    number_ = mpa::math::Add(number_, rhs.Value());
-  } else {
-    number_ = mpa::math::Add(rhs.Value(), number_);
-  }
+  number_ = mpa::math::Add(number_, rhs.number_);
   return *this;
 }
 
-Integer& Integer::operator-=(const Integer&) noexcept
+Integer& Integer::operator-=(const Integer& rhs) noexcept
 {
-  // 1) -a-a;
-  // 2)  a-b;
-  // 3) -a - -b = -a + b = b - a
-  // 4) a - - a = a + a
-  MPANotImplemented() << "Integer::operator-=" << std::endl;
+  number_ = mpa::math::Subtract(number_, rhs.number_);
   return *this;
 }
 
@@ -57,6 +49,7 @@ Integer& Integer::operator%=(const Integer&)
 Integer& Integer::operator++() noexcept
 {
   MPANotImplemented() << "Integer::operator++()" << std::endl;
+  //TODO: NUMERIC 1!
   return *this;
 }
 
