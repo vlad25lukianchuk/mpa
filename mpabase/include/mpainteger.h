@@ -22,12 +22,18 @@ class Integer {
   Integer& operator++() noexcept;
   Integer& operator--() noexcept;
 
-  // TODO: unary minus, unary plus, conversion operators?
-  // comparison operators, etc. a lot of TODO.
+  friend Integer operator-(const Integer&) noexcept;
+  friend bool operator==(const Integer& lhs, const Integer& rhs) noexcept;
+  friend bool operator>(const Integer& lhs, const Integer& rhs) noexcept;
+  friend bool operator<(const Integer& ohs, const Integer& rhs) noexcept;
 
   friend std::ostream& operator<<(std::ostream& ost, const Integer& number);
+  friend std::istream& operator>>(std::istream& ost, Integer& number);
+
+  // TODO: conversion, literal operators?
 
  private:
+  explicit Integer(core::Number&& number) noexcept;
   core::Number number_;
 };
 
@@ -70,12 +76,55 @@ inline Integer operator--(Integer& lhs, int) noexcept
   return tmp;
 }
 
+inline Integer operator-(const Integer& rhs) noexcept
+{
+  return Integer{-rhs.number_};
+}
+
+inline Integer operator+(const Integer& rhs) noexcept
+{
+  return rhs;
+}
+
+inline bool operator==(const Integer& lhs, const Integer& rhs) noexcept
+{
+  return lhs.number_ == rhs.number_;
+}
+
+inline bool operator!=(const Integer& lhs, const Integer& rhs) noexcept
+{
+  return !(lhs == rhs);
+}
+
+inline bool operator>(const Integer& lhs, const Integer& rhs) noexcept
+{
+  return lhs.number_ > rhs.number_;
+}
+
+inline bool operator<(const Integer& lhs, const Integer& rhs) noexcept
+{
+  return lhs.number_ < rhs.number_;
+}
+
+inline bool operator>=(const Integer& lhs, const Integer& rhs) noexcept
+{
+  return !(lhs < rhs);
+}
+
+inline bool operator<=(const Integer& lhs, const Integer& rhs) noexcept
+{
+  return !(lhs > rhs);
+}
+
 inline std::ostream& operator<<(std::ostream& ost, const Integer& number)
 {
   return ost << number.number_;
 }
 
-std::istream& operator>>(std::istream& ist, Integer& number);
+inline std::istream& operator>>(std::istream& ist, Integer& number)
+{
+  return ist >> number.number_;
+}
 
 }  // namespace mpa
 

@@ -1,9 +1,15 @@
 #include "mpamath.h"
 
+#include <stdexcept>
+#include <string>
+#include <vector>
+
 #include "mpanumber.h"
 
 using mpa::core::Number;
+using mpa::core::Sign;
 using std::string;
+using std::vector;
 
 namespace mpa {
 namespace math {
@@ -18,11 +24,11 @@ Number Add(const Number& lhs, const Number& rhs) noexcept
   // 3) Different signs: determine which is negative and perform subtraction
 
   if (lhs.sign() == rhs.sign()) {
-    return lhs.sign() == mpa::core::Sign::kPlus ? impl::AddHelper(lhs, rhs)
-                                                : -impl::AddHelper(lhs, rhs);
+    return lhs.sign() == Sign::kPlus ? impl::AddHelper(lhs, rhs)
+                                     : -impl::AddHelper(lhs, rhs);
   }
-  return lhs.sign() == mpa::core::Sign::kMinus ? impl::SubtractHelper(rhs, lhs)
-                                               : impl::SubtractHelper(lhs, rhs);
+  return lhs.sign() == Sign::kMinus ? impl::SubtractHelper(rhs, lhs)
+                                    : impl::SubtractHelper(lhs, rhs);
 }
 
 Number Subtract(const Number& lhs, const Number& rhs) noexcept
@@ -37,33 +43,82 @@ Number Subtract(const Number& lhs, const Number& rhs) noexcept
   // 4) If equal: ZERO!!
 
   if (lhs.sign() == rhs.sign()) {
-    return lhs.sign() == mpa::core::Sign::kPlus
-               ? impl::SubtractHelper(lhs, rhs)
-               : impl::SubtractHelper(rhs, lhs);
+    return lhs.sign() == Sign::kPlus ? impl::SubtractHelper(lhs, rhs)
+                                     : impl::SubtractHelper(rhs, lhs);
   }
-  return lhs.sign() == mpa::core::Sign::kMinus ? -impl::AddHelper(lhs, rhs)
-                                               : impl::AddHelper(lhs, rhs);
+  return lhs.sign() == Sign::kMinus ? -impl::AddHelper(lhs, rhs)
+                                    : impl::AddHelper(lhs, rhs);
+}
+
+Number Multiply(const Number& lhs, const Number& rhs) noexcept
+{
+  // 1) Both positive - result is positive
+  // 2) Both negative - result is positive
+  // 3) Different signs - result is negative
+  return lhs.sign() == rhs.sign() ? impl::MultiplyHelper(lhs, rhs)
+                                  : -impl::MultiplyHelper(lhs, rhs);
+}
+
+Number Divide(const Number& lhs, const Number& rhs)
+{
+  if (rhs.value() == "0" || rhs.value() == "-0" || rhs.value() == "+0") {
+    throw std::runtime_error{"Operation not permitted: Division by zero."};
+  }
+
+  if (lhs.value().size() < rhs.value().size() ||
+      (lhs.value().size() == rhs.value().size() && lhs.value() < rhs.value())) {
+    // ZERO AGAIN
+    return Number{"0"};
+  }
+
+  return lhs.sign() == rhs.sign()
+             ? Number{impl::DivideImpl(lhs.value(), rhs.value())}
+             : -Number{impl::DivideImpl(lhs.value(), rhs.value())};
+}
+
+core::Number Reminder(const core::Number& lhs, const core::Number& rhs)
+{
+  if (rhs.value() == "0" || rhs.value() == "-0" || rhs.value() == "+0") {
+    throw std::runtime_error{"Operation not permitted: Division (reminder) by zero."};
+  }
+
+  if (lhs.value().size() < rhs.value().size() ||
+      (lhs.value().size() == rhs.value().size() && lhs.value() < rhs.value())) {
+    return rhs;
+  }
+
+  return lhs.sign() == rhs.sign()
+             ? Number{impl::ReminderImpl(lhs.value(), rhs.value())}
+             : -Number{impl::ReminderImpl(lhs.value(), rhs.value())};
 }
 
 namespace impl {
 
 Number AddHelper(const Number& lhs, const Number& rhs) noexcept
 {
-  if (lhs.value().size() > rhs.value().size()) {
-    return Number{AddImpl(lhs.value(), rhs.value())};
-  }
-  return Number{AddImpl(rhs.value(), lhs.value())};
+  return lhs.value().size() > rhs.value().size()
+             ? Number{AddImpl(lhs.value(), rhs.value())}
+             : Number{AddImpl(rhs.value(), lhs.value())};
 }
 
-core::Number SubtractHelper(const core::Number& lhs,
-                            const core::Number& rhs) noexcept
+Number SubtractHelper(const core::Number& lhs, const core::Number& rhs) noexcept
 {
-  return core::IsGreater(lhs.value(), rhs.value()) ?
-                                                   Number{SubtractImpl(lhs.value(), rhs.value())}
-                                                   : -Number{SubtractImpl(rhs.value(), lhs.value())};
+  return core::IsGreater(lhs.value(), rhs.value())
+             ? Number{SubtractImpl(lhs.value(), rhs.value())}
+             : -Number{SubtractImpl(rhs.value(), lhs.value())};
 }
 
-// TODO: works, but not quite elegant
+// TODO: multiplication by zero does not work properly
+// (it results in many zeroes instead of one)
+Number MultiplyHelper(const Number& lhs, const Number& rhs) noexcept
+{
+  // if we multiply larger by smaller, the number of additions is less
+  // (equal to the number of digits in smaller)
+  return lhs.value().size() > rhs.value().size()
+             ? Number{MultiplyImpl(lhs.value(), rhs.value())}
+             : Number{MultiplyImpl(rhs.value(), lhs.value())};
+}
+
 string AddImpl(const string& larger, const string& smaller) noexcept
 {
   string reverse_res;
@@ -112,6 +167,118 @@ string SubtractImpl(const string& larger, const string& smaller) noexcept
   }
 
   return {r_it, reverse_res.rend()};
+}
+
+string MultiplyImpl(const string& larger, const string& smaller) noexcept
+{
+  vector<string> additions;
+  additions.reserve(smaller.size());
+
+  int increaser{0};
+  int counter{0};
+
+  // O(n*n)
+  for (auto s_it = smaller.rbegin(); s_it != smaller.rend(); ++s_it) {
+    const int multiplier = ToDec(*s_it);
+    string tmp_res;
+    for (auto l_it = larger.rbegin(); l_it != larger.rend(); ++l_it) {
+      const int res = ToDec(*l_it) * multiplier + increaser;
+      const int reminder = res < kBase ? (increaser = 0, res)
+                                       : (increaser = res / kBase, res % kBase);
+      tmp_res.push_back(ToChar(reminder));
+    }
+
+    if (increaser) {
+      tmp_res.push_back(ToChar(increaser));
+    }
+
+    // Too bad, reverse and add additional zeroes at the end
+    // for each addition starting from second (counter == 1)
+    tmp_res = {tmp_res.rbegin(), tmp_res.rend()};
+    for (int i = 0; i < counter; ++i) {
+      tmp_res.push_back('0');
+    }
+
+    additions.push_back(std::move(tmp_res));
+    ++counter;
+  }
+
+  string res{additions[0]};
+  for (size_t i = 1; i < additions.size(); ++i) {
+    res = AddImpl(additions[i], res);
+  }
+
+  return res;
+}
+
+// TODO: TO UTILS!!!
+bool IsLess(const std::string& lhs, const std::string& rhs) noexcept
+{
+  return lhs.size() == rhs.size() ? lhs < rhs : lhs.size() < rhs.size();
+}
+
+bool IsGreaterOrEqual(const std::string& lhs, const std::string& rhs) noexcept
+{
+  return !IsLess(lhs, rhs);
+}
+
+string DivideImpl(const string& lhs, const string& rhs) noexcept
+{
+  string res;
+
+  // 1) find the fist number in lhs - lhs0 which is greter than rhs
+  // 2) subtract from lhs0 rhs: rest = lhs0 - rhs. Continue untill rest > rhs
+  // 3) number of subtactions is the fist digit in result
+  // 4) concatenate rest with the next digit from lhs and continue 1)-3)
+  // till lhs has digits.
+  // 5) Discard rest if any
+
+  auto l_it = lhs.begin();
+  string lhs0;
+
+  // UGLY
+  while (l_it != lhs.end() && !IsGreaterOrEqual(lhs0, rhs)) {
+    lhs0 += *l_it++;
+  }
+
+  while (l_it != lhs.end()) {
+    if (lhs0.empty()) {
+      while (l_it != lhs.end() && !IsGreaterOrEqual(lhs0, rhs)) {
+        lhs0 += *l_it++;
+        res.push_back('0');
+      }
+    } else {
+      while (l_it != lhs.end() && !IsGreaterOrEqual(lhs0, rhs)) {
+        lhs0 += *l_it++;
+      }
+    }
+    int counter{0};
+    while (IsGreaterOrEqual(lhs0, rhs)) {
+      lhs0 = SubtractImpl(lhs0, rhs);
+      ++counter;
+    }
+    if (counter) {
+      res.push_back(ToChar(counter));
+    }
+  }
+  return res;
+}
+
+string ReminderImpl(const string &lhs, const string &rhs) noexcept
+{
+  // Currently just copy-paste division implementation with
+  // some adjustments
+  auto l_it = lhs.begin();
+  string lhs0;
+  while (l_it != lhs.end()) {
+    while (l_it != lhs.end() && !IsGreaterOrEqual(lhs0, rhs)) {
+      lhs0 += *l_it++;
+    }
+    while (IsGreaterOrEqual(lhs0, rhs)) {
+      lhs0 = SubtractImpl(lhs0, rhs);
+    }
+  }
+  return lhs0.empty() ? "0" : lhs0;
 }
 
 }  // namespace impl

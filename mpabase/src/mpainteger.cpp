@@ -12,9 +12,11 @@ using std::string;
 
 namespace mpa {
 
-Integer::Integer(string number) : number_{core::CheckNumber(std::move(number))}
+Integer::Integer(string number) : number_{core::VerifyNumber(std::move(number))}
 {
 }
+
+Integer::Integer(core::Number&& number) noexcept : number_{number} {}
 
 Integer& Integer::operator+=(const Integer& rhs) noexcept
 {
@@ -28,28 +30,30 @@ Integer& Integer::operator-=(const Integer& rhs) noexcept
   return *this;
 }
 
-Integer& Integer::operator*=(const Integer&) noexcept
+Integer& Integer::operator*=(const Integer& rhs) noexcept
 {
-  MPANotImplemented() << "Integer::operator*=" << std::endl;
+  number_ = mpa::math::Multiply(number_, rhs.number_);
   return *this;
 }
 
-Integer& Integer::operator/=(const Integer&)
+Integer& Integer::operator/=(const Integer& rhs)
 {
-  MPANotImplemented() << "Integer::operator/=" << std::endl;
+  // TODO: mb handle exception?
+  number_ = mpa::math::Divide(number_, rhs.number_);
   return *this;
 }
 
-Integer& Integer::operator%=(const Integer&)
+Integer& Integer::operator%=(const Integer& rhs)
 {
-  MPANotImplemented() << "Integer::operator%=" << std::endl;
+  // TODO: mb handle exception?
+  number_ = mpa::math::Reminder(number_, rhs.number_);
   return *this;
 }
 
 Integer& Integer::operator++() noexcept
 {
   MPANotImplemented() << "Integer::operator++()" << std::endl;
-  //TODO: NUMERIC 1!
+  // TODO: NUMERIC 1!
   return *this;
 }
 
@@ -57,12 +61,6 @@ Integer& Integer::operator--() noexcept
 {
   MPANotImplemented() << "Integer::operator--()" << std::endl;
   return *this;
-}
-
-std::istream& operator>>(std::istream& ist, Integer&)
-{
-  MPANotImplemented() << "Integer::operator>>" << std::endl;
-  return ist;
 }
 
 }  // namespace mpa

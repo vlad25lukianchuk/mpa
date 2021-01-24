@@ -1,5 +1,5 @@
-#ifndef MPA_MPABASE_SRC_MPAVALUE_H_
-#define MPA_MPABASE_SRC_MPAVALUE_H_
+#ifndef MPA_MPABASE_SRC_MPANUMBER_H_
+#define MPA_MPABASE_SRC_MPANUMBER_H_
 
 #include <iostream>
 #include <string>
@@ -27,6 +27,7 @@ class Number {
   friend bool operator>(const Number& lhs, const Number& rhs) noexcept;
   friend bool operator<(const Number& lhs, const Number& rhs) noexcept;
   friend std::ostream& operator<<(std::ostream&, const Number&);
+  friend std::istream& operator>>(std::istream&, Number&);
 
  private:
   std::string value_;
@@ -40,7 +41,7 @@ bool IsGreater(const std::string& lhs, const std::string& rhs) noexcept;
 bool IsNegative(const std::string& number) noexcept;
 bool IsPositive(const std::string& number) noexcept;
 bool HasNonDigitSymbol(const std::string& value) noexcept;
-Number CheckNumber(std::string&& number);
+Number VerifyNumber(std::string&& number);
 
 inline Number operator-(const Number& rhs) noexcept
 {
@@ -77,7 +78,7 @@ inline bool operator>(const Number& lhs, const Number& rhs) noexcept
   // 2) If the same sign - compare values, in case of negative values
   // the comparison logic is inverse
   return lhs.sign_ == rhs.sign_
-             ? (lhs.sign_ == Sign::kMinus ? IsGreater(rhs.value_,  lhs.value_)
+             ? (lhs.sign_ == Sign::kMinus ? IsGreater(rhs.value_, lhs.value_)
                                           : IsGreater(lhs.value_, rhs.value_))
              : lhs.sign_ == Sign::kPlus;
 }
@@ -106,7 +107,9 @@ inline std::ostream& operator<<(std::ostream& ost, const Number& number)
                                       : ost << number.value_;
 }
 
+std::istream& operator>>(std::istream& ist, Number&);
+
 }  // namespace core
 }  // namespace mpa
 
-#endif  // MPA_MPABASE_SRC_MPAVALUE_H_
+#endif  // MPA_MPABASE_SRC_MPANUMBER_H_

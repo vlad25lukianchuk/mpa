@@ -2,8 +2,8 @@
 
 #include <algorithm>
 #include <sstream>
-#include <string>
 #include <stdexcept>
+#include <string>
 #include <utility>
 
 #include "mpalog.h"
@@ -24,22 +24,36 @@ Number::Number(std::string value, Sign sign) noexcept
 {
 }
 
+constexpr bool IsDigit(char c) noexcept
+{
+  return c < kAsciiDigitStart || c > kAsciiDigitEnd;
+}
+
 bool IsNegative(const string& number) noexcept
 {
   return !number.empty() && number.front() == kMinusChar;
 }
 
+// TODO: mb redundant
 bool IsPositive(const string& number) noexcept
 {
-  return !number.empty() && number.front() != kMinusChar;
+  return !number.empty() &&
+         (number.front() == kPlusChar || IsDigit(number.front()));
 }
 
-Number CheckNumber(string&& number)
+Number VerifyNumber(string&& number)
 {
+  // TODO: if empty, mb zero?
+  // TODO: check trailing zeros
+  if (number.empty()) {
+    throw std::runtime_error{
+        "The number value is empty, thus consider as not a number"};
+  }
+
   Sign sign{Sign::kPlus};
   string value{std::move(number)};
 
-  if (IsNegative(number)) {
+  if (IsNegative(value)) {
     sign = Sign::kMinus;
     // unfortunate copy
     value = {value.cbegin() + 1, value.cend()};
@@ -64,6 +78,13 @@ bool HasNonDigitSymbol(const string& value) noexcept
 bool IsGreater(const string& lhs, const string& rhs) noexcept
 {
   return lhs.size() == rhs.size() ? lhs > rhs : lhs.size() > rhs.size();
+}
+
+std::istream& operator>>(std::istream& ist, Number&)
+{
+  MPANotImplemented()
+      << "std::istream &operator>>(std::istream &ist, Number& number)";
+  return ist;
 }
 
 }  // namespace core
