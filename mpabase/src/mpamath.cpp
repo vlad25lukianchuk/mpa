@@ -79,7 +79,8 @@ Number Divide(const Number& lhs, const Number& rhs)
 core::Number Reminder(const core::Number& lhs, const core::Number& rhs)
 {
   if (rhs.value() == "0" || rhs.value() == "-0" || rhs.value() == "+0") {
-    throw std::runtime_error{"Operation not permitted: Division (reminder) by zero."};
+    throw std::runtime_error{
+        "Operation not permitted: Division (reminder) by zero."};
   }
 
   if (lhs.value().size() < rhs.value().size() ||
@@ -264,7 +265,7 @@ string DivideImpl(const string& lhs, const string& rhs) noexcept
   return res;
 }
 
-string ReminderImpl(const string &lhs, const string &rhs) noexcept
+string ReminderImpl(const string& lhs, const string& rhs) noexcept
 {
   // Currently just copy-paste division implementation with
   // some adjustments

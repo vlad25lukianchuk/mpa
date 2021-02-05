@@ -44,7 +44,8 @@ std::string SubtractImpl(const std::string& lhs,
 std::string MultiplyImpl(const std::string& larger,
                          const std::string& smaller) noexcept;
 std::string DivideImpl(const std::string& lhs, const std::string& rhs) noexcept;
-std::string ReminderImpl(const std::string& lhs, const std::string& rhs) noexcept;
+std::string ReminderImpl(const std::string& lhs,
+                         const std::string& rhs) noexcept;
 
 }  // namespace impl
 
