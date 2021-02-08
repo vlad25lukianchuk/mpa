@@ -10,7 +10,8 @@
 
 namespace mpa {
 
-Integer::Integer(std::string number) : number_{core::VerifyNumber(std::move(number))}
+Integer::Integer(std::string number)
+    : number_{core::VerifyNumber(std::move(number))}
 {
 }
 

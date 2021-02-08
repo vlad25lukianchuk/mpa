@@ -35,9 +35,6 @@ if(${BUILD_TESTING})
         ${CMAKE_CURRENT_BINARY_DIR}/googletest-build
         EXCLUDE_FROM_ALL)
 
-    # include tests
-    add_subdirectory(${MPA_ROOT_DIR}/tests)
-
     if(${CMAKE_BUILD_TYPE} STREQUAL "Coverage")
         # enable coverage
         find_program(GCOV_PATH gcov)

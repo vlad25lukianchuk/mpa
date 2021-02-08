@@ -14,6 +14,7 @@ list(APPEND CMAKE_MODULE_PATH ${MPA_ROOT_DIR}/cmake)
 include(mpa_config)
 include(mpa_compilers)
 include(mpa_functions)
+include(mpa_test)
 
 add_subdirectory(mpabase)
 add_subdirectory(mpalog)
@@ -25,6 +26,5 @@ if(${BUILD_EXAMPLES})
     add_subdirectory(examples)
 endif()
 
-# Tests
-include(mpa_test)
+
 

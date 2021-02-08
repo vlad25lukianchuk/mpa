@@ -4,18 +4,18 @@
 #include <string>
 #include <vector>
 
-#include "mpanumber.h"
 #include "coreutils.h"
+#include "mpanumber.h"
 
 namespace mpa {
 namespace math {
 
+using mpa::core::IsAbsGreaterOrEqual;
+using mpa::core::kBase;
 using mpa::core::Number;
 using mpa::core::Sign;
 using mpa::core::ToChar;
 using mpa::core::ToDec;
-using mpa::core::IsAbsGreaterOrEqual;
-using mpa::core::kBase;
 
 using std::string;
 using std::vector;

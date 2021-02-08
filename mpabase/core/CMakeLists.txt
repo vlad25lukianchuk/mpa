@@ -8,3 +8,7 @@ mpa_add_shared_library(
     PRIVATE_INCL src/
     PRIVATE_LINK_LIB mpalog
     )
+
+if(${BUILD_TESTING})
+    add_subdirectory(test)
+endif()

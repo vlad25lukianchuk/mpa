@@ -72,18 +72,18 @@ inline bool operator>(const Number& lhs, const Number& rhs) noexcept
   // 1) Sign - positive always is greater than negative
   // 2) If the same sign - compare values, in case of negative values
   // the comparison logic is inverse
-  return lhs.sign_ == rhs.sign_
-             ? (lhs.sign_ == Sign::kMinus ? IsAbsGreater(rhs.value_, lhs.value_)
-                                          : IsAbsGreater(lhs.value_, rhs.value_))
-             : lhs.sign_ == Sign::kPlus;
+  return lhs.sign_ == rhs.sign_ ? (lhs.sign_ == Sign::kMinus
+                                       ? IsAbsGreater(rhs.value_, lhs.value_)
+                                       : IsAbsGreater(lhs.value_, rhs.value_))
+                                : lhs.sign_ == Sign::kPlus;
 }
 
 inline bool operator<(const Number& lhs, const Number& rhs) noexcept
 {
-  return lhs.sign_ == rhs.sign_
-             ? (lhs.sign_ == Sign::kMinus ? IsAbsGreater(lhs.value_, rhs.value_)
-                                          : IsAbsGreater(rhs.value_, lhs.value_))
-             : lhs.sign_ == Sign::kMinus;
+  return lhs.sign_ == rhs.sign_ ? (lhs.sign_ == Sign::kMinus
+                                       ? IsAbsGreater(lhs.value_, rhs.value_)
+                                       : IsAbsGreater(rhs.value_, lhs.value_))
+                                : lhs.sign_ == Sign::kMinus;
 }
 
 inline bool operator>=(const Number& lhs, const Number& rhs) noexcept

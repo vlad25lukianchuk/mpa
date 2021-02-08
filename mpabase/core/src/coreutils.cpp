@@ -33,24 +33,28 @@ bool IsAbsEqual(const std::string &lhs, const std::string &rhs) noexcept
   return lhs.size() == rhs.size() && rhs == lhs;
 }
 
-bool HasNonDigitSymbol(const string& value) noexcept
+bool HasNonDigitSymbol(const string &value) noexcept
 {
   return std::any_of(value.cbegin(), value.cend(), [](char c) {
     return c < kAsciiDigitStart || c > kAsciiDigitEnd;
   });
 }
 
-bool IsNegative(const string& number) noexcept
+bool IsNegative(const string &number) noexcept
 {
   return !number.empty() && number.front() == kMinusChar;
 }
 
-// TODO: mb redundant
-bool IsPositive(const string& number) noexcept
+bool IsPositive(const string &number) noexcept
 {
   return !number.empty() &&
-      (number.front() == kPlusChar || IsDigit(number.front()));
+         (number.front() == kPlusChar || IsDigit(number.front()));
 }
 
-} // namespace core
-} // namespace mpa
+bool HasPlusSignAtFront(const string &number) noexcept
+{
+  return !number.empty() && number.front() == kPlusChar;
+}
+
+}  // namespace core
+}  // namespace mpa

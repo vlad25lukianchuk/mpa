@@ -115,7 +115,7 @@ function(mpa_add_unittest)
         )
 
     mpa_add_executable(
-        NAME ${MPA_UT_NAME}
+        NAME "ut_${MPA_UT_NAME}"
         TARGET_SOURCES ${MPA_UT_TARGET_SOURCES}
         LINK_LIBS ${MPA_UT_LINK_LIBS}
         INCLUDE_DIRS ${MPA_UT_INCLUDE_DIRS}
@@ -125,7 +125,7 @@ function(mpa_add_unittest)
 
     add_test(
         NAME ${TEST_NAME}
-        COMMAND ${MPA_UT_NAME}
+        COMMAND "ut_${MPA_UT_NAME}"
         )
 
 endfunction()

@@ -24,8 +24,10 @@ ${lcov_base_command} -a ${REPORT_DIR}/base_coverage.info -a \
 
 # exclude unwanted data from report
 ${lcov_base_command} --remove ${REPORT_DIR}/total_coverage.info \
-    '*/googletest*/*' \
-    '/usr/include/*' \
+    "*/googletest*/*" \
+    "/usr/include/*" \
+    "*/test/*" \
+    "*/examples/*" \
     -o ${REPORT_DIR}/coverage.info
 
 genhtml --function-coverage --branch-coverage --legend --show-details \
