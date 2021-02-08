@@ -1,9 +1,11 @@
-#ifndef MPA_MPABASE_SRC_MPANUMBER_H_
-#define MPA_MPABASE_SRC_MPANUMBER_H_
+#ifndef MPA_MPABASE_CORE_INCLUDE_MPANUMBER_H_
+#define MPA_MPABASE_CORE_INCLUDE_MPANUMBER_H_
 
 #include <iostream>
 #include <string>
 #include <utility>
+
+#include "coreutils.h"
 
 namespace mpa {
 namespace core {
@@ -34,13 +36,6 @@ class Number {
   Sign sign_{Sign::kPlus};
 };
 
-// TODO: move to utils module
-// TODO: create utils module
-// call it IsAbsGreater ... or something like that
-bool IsGreater(const std::string& lhs, const std::string& rhs) noexcept;
-bool IsNegative(const std::string& number) noexcept;
-bool IsPositive(const std::string& number) noexcept;
-bool HasNonDigitSymbol(const std::string& value) noexcept;
 Number VerifyNumber(std::string&& number);
 
 inline Number operator-(const Number& rhs) noexcept
@@ -78,16 +73,16 @@ inline bool operator>(const Number& lhs, const Number& rhs) noexcept
   // 2) If the same sign - compare values, in case of negative values
   // the comparison logic is inverse
   return lhs.sign_ == rhs.sign_
-             ? (lhs.sign_ == Sign::kMinus ? IsGreater(rhs.value_, lhs.value_)
-                                          : IsGreater(lhs.value_, rhs.value_))
+             ? (lhs.sign_ == Sign::kMinus ? IsAbsGreater(rhs.value_, lhs.value_)
+                                          : IsAbsGreater(lhs.value_, rhs.value_))
              : lhs.sign_ == Sign::kPlus;
 }
 
 inline bool operator<(const Number& lhs, const Number& rhs) noexcept
 {
   return lhs.sign_ == rhs.sign_
-             ? (lhs.sign_ == Sign::kMinus ? IsGreater(lhs.value_, rhs.value_)
-                                          : IsGreater(rhs.value_, lhs.value_))
+             ? (lhs.sign_ == Sign::kMinus ? IsAbsGreater(lhs.value_, rhs.value_)
+                                          : IsAbsGreater(rhs.value_, lhs.value_))
              : lhs.sign_ == Sign::kMinus;
 }
 
@@ -112,4 +107,4 @@ std::istream& operator>>(std::istream& ist, Number&);
 }  // namespace core
 }  // namespace mpa
 
-#endif  // MPA_MPABASE_SRC_MPANUMBER_H_
+#endif  // MPA_MPABASE_CORE_INCLUDE_MPANUMBER_H_

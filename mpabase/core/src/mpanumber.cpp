@@ -13,32 +13,9 @@ using std::string;
 namespace mpa {
 namespace core {
 
-constexpr char kMinusChar{'-'};
-constexpr char kPlusChar{'+'};
-
-constexpr int kAsciiDigitStart{48};
-constexpr int kAsciiDigitEnd{57};
-
 Number::Number(std::string value, Sign sign) noexcept
     : value_{std::move(value)}, sign_{sign}
 {
-}
-
-constexpr bool IsDigit(char c) noexcept
-{
-  return c < kAsciiDigitStart || c > kAsciiDigitEnd;
-}
-
-bool IsNegative(const string& number) noexcept
-{
-  return !number.empty() && number.front() == kMinusChar;
-}
-
-// TODO: mb redundant
-bool IsPositive(const string& number) noexcept
-{
-  return !number.empty() &&
-         (number.front() == kPlusChar || IsDigit(number.front()));
 }
 
 Number VerifyNumber(string&& number)
@@ -66,18 +43,6 @@ Number VerifyNumber(string&& number)
   }
 
   return Number{std::move(value), sign};
-}
-
-bool HasNonDigitSymbol(const string& value) noexcept
-{
-  return std::any_of(value.cbegin(), value.cend(), [](char c) {
-    return c < kAsciiDigitStart || c > kAsciiDigitEnd;
-  });
-}
-
-bool IsGreater(const string& lhs, const string& rhs) noexcept
-{
-  return lhs.size() == rhs.size() ? lhs > rhs : lhs.size() > rhs.size();
 }
 
 std::istream& operator>>(std::istream& ist, Number&)

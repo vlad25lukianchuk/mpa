@@ -5,16 +5,20 @@
 #include <vector>
 
 #include "mpanumber.h"
-
-using mpa::core::Number;
-using mpa::core::Sign;
-using std::string;
-using std::vector;
+#include "coreutils.h"
 
 namespace mpa {
 namespace math {
 
-constexpr int kBase{10};
+using mpa::core::Number;
+using mpa::core::Sign;
+using mpa::core::ToChar;
+using mpa::core::ToDec;
+using mpa::core::IsAbsGreaterOrEqual;
+using mpa::core::kBase;
+
+using std::string;
+using std::vector;
 
 Number Add(const Number& lhs, const Number& rhs) noexcept
 {
@@ -104,7 +108,7 @@ Number AddHelper(const Number& lhs, const Number& rhs) noexcept
 
 Number SubtractHelper(const core::Number& lhs, const core::Number& rhs) noexcept
 {
-  return core::IsGreater(lhs.value(), rhs.value())
+  return core::IsAbsGreater(lhs.value(), rhs.value())
              ? Number{SubtractImpl(lhs.value(), rhs.value())}
              : -Number{SubtractImpl(rhs.value(), lhs.value())};
 }
@@ -212,17 +216,6 @@ string MultiplyImpl(const string& larger, const string& smaller) noexcept
   return res;
 }
 
-// TODO: TO UTILS!!!
-bool IsLess(const std::string& lhs, const std::string& rhs) noexcept
-{
-  return lhs.size() == rhs.size() ? lhs < rhs : lhs.size() < rhs.size();
-}
-
-bool IsGreaterOrEqual(const std::string& lhs, const std::string& rhs) noexcept
-{
-  return !IsLess(lhs, rhs);
-}
-
 string DivideImpl(const string& lhs, const string& rhs) noexcept
 {
   string res;
@@ -238,23 +231,23 @@ string DivideImpl(const string& lhs, const string& rhs) noexcept
   string lhs0;
 
   // UGLY
-  while (l_it != lhs.end() && !IsGreaterOrEqual(lhs0, rhs)) {
+  while (l_it != lhs.end() && !IsAbsGreaterOrEqual(lhs0, rhs)) {
     lhs0 += *l_it++;
   }
 
   while (l_it != lhs.end()) {
     if (lhs0.empty()) {
-      while (l_it != lhs.end() && !IsGreaterOrEqual(lhs0, rhs)) {
+      while (l_it != lhs.end() && !IsAbsGreaterOrEqual(lhs0, rhs)) {
         lhs0 += *l_it++;
         res.push_back('0');
       }
     } else {
-      while (l_it != lhs.end() && !IsGreaterOrEqual(lhs0, rhs)) {
+      while (l_it != lhs.end() && !IsAbsGreaterOrEqual(lhs0, rhs)) {
         lhs0 += *l_it++;
       }
     }
     int counter{0};
-    while (IsGreaterOrEqual(lhs0, rhs)) {
+    while (IsAbsGreaterOrEqual(lhs0, rhs)) {
       lhs0 = SubtractImpl(lhs0, rhs);
       ++counter;
     }
@@ -272,10 +265,10 @@ string ReminderImpl(const string& lhs, const string& rhs) noexcept
   auto l_it = lhs.begin();
   string lhs0;
   while (l_it != lhs.end()) {
-    while (l_it != lhs.end() && !IsGreaterOrEqual(lhs0, rhs)) {
+    while (l_it != lhs.end() && !IsAbsGreaterOrEqual(lhs0, rhs)) {
       lhs0 += *l_it++;
     }
-    while (IsGreaterOrEqual(lhs0, rhs)) {
+    while (IsAbsGreaterOrEqual(lhs0, rhs)) {
       lhs0 = SubtractImpl(lhs0, rhs);
     }
   }

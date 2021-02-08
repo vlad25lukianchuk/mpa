@@ -8,11 +8,9 @@
 #include "mpamath.h"
 #include "mpanumber.h"
 
-using std::string;
-
 namespace mpa {
 
-Integer::Integer(string number) : number_{core::VerifyNumber(std::move(number))}
+Integer::Integer(std::string number) : number_{core::VerifyNumber(std::move(number))}
 {
 }
 

@@ -82,7 +82,8 @@ format_edit_cmd="clang-format -i" # format with edit in place
 # TODO: some new modules does not have
 # appropriate structure yet, thus should be excluded explicitly
 # mpa_modules=$(ls ${repo_path} | grep -P "mpa.*")
-mpa_modules="mpabase mpalog"
+# TODO: workaround, make it recursive
+mpa_modules="mpabase/core mpabase/interface mpabase/math mpalog"
 other_modules="examples tests"
 
 for module in ${mpa_modules} ${other_modules}; do
