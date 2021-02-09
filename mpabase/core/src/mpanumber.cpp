@@ -22,6 +22,7 @@ Number VerifyNumber(string&& number)
 {
   // TODO: if empty, mb zero?
   // TODO: check trailing zeros
+  // TODO: clean trailing zeros?
   if (number.empty()) {
     throw std::runtime_error{
         "The number value is empty, thus consider as not a number"};
