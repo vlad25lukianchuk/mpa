@@ -65,7 +65,7 @@ Number Multiply(const Number& lhs, const Number& rhs) noexcept
 
 Number Divide(const Number& lhs, const Number& rhs)
 {
-  if (rhs.value() == "0" || rhs.value() == "-0" || rhs.value() == "+0") {
+  if (rhs.value() == "0") {
     throw std::runtime_error{"Operation not permitted: Division by zero."};
   }
 

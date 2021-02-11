@@ -8,3 +8,7 @@ mpa_add_shared_library(
     PUBLIC_LINK_LIB mpacore
     PRIVATE_LINK_LIB mpalog
     )
+
+if(${BUILD_TESTING})
+    add_subdirectory(test)
+endif()
