@@ -5,3 +5,15 @@ mpa_add_unittest(
     TARGET_SOURCES ut_addition.cpp
     LINK_LIBS mpamath gtest_main
     )
+
+mpa_add_unittest(
+    NAME subtraction
+    TARGET_SOURCES ut_subtraction.cpp
+    LINK_LIBS mpamath gtest_main
+    )
+
+mpa_add_unittest(
+    NAME multiplication
+    TARGET_SOURCES ut_multiplication.cpp
+    LINK_LIBS mpamath gtest_main
+    )

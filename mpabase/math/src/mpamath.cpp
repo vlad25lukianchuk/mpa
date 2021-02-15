@@ -167,8 +167,12 @@ string SubtractImpl(const string& larger, const string& smaller) noexcept
 
   // skip trailing zeroes at the end
   auto r_it = reverse_res.rbegin();
-  while (*r_it == '0') {
+  while (r_it != reverse_res.rend() && *r_it == '0') {
     ++r_it;
+  }
+
+  if (r_it == reverse_res.rend()) {
+    return "0";
   }
 
   return {r_it, reverse_res.rend()};
@@ -179,13 +183,13 @@ string MultiplyImpl(const string& larger, const string& smaller) noexcept
   vector<string> additions;
   additions.reserve(smaller.size());
 
-  int increaser{0};
   int counter{0};
 
   // O(n*n)
   for (auto s_it = smaller.rbegin(); s_it != smaller.rend(); ++s_it) {
     const int multiplier = ToDec(*s_it);
     string tmp_res;
+    int increaser{0};
     for (auto l_it = larger.rbegin(); l_it != larger.rend(); ++l_it) {
       const int res = ToDec(*l_it) * multiplier + increaser;
       const int reminder = res < kBase ? (increaser = 0, res)
