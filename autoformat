@@ -84,7 +84,7 @@ format_edit_cmd="clang-format -i" # format with edit in place
 # mpa_modules=$(ls ${repo_path} | grep -P "mpa.*")
 # TODO: workaround, make it recursive
 mpa_modules="mpabase/core mpabase/core/test mpabase/interface mpabase/math \
-   mpalog"
+   mpalog mpabase/math/test mpabase/interface/test"
 other_modules="examples"
 
 for module in ${mpa_modules} ${other_modules}; do

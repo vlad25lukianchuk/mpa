@@ -17,3 +17,9 @@ mpa_add_unittest(
     TARGET_SOURCES ut_multiplication.cpp
     LINK_LIBS mpamath gtest_main
     )
+
+mpa_add_unittest(
+    NAME division
+    TARGET_SOURCES ut_division.cpp
+    LINK_LIBS mpamath gtest_main
+    )

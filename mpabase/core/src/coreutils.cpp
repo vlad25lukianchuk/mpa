@@ -30,7 +30,7 @@ bool IsAbsLessOrEqual(const std::string &lhs, const std::string &rhs) noexcept
 
 bool IsAbsEqual(const std::string &lhs, const std::string &rhs) noexcept
 {
-  return lhs.size() == rhs.size() && rhs == lhs;
+  return rhs == lhs;
 }
 
 bool HasNonDigitSymbol(const string &value) noexcept

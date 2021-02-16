@@ -29,7 +29,7 @@ TEST(MpaMultiplyImpl, MultiplyByZero)
   const std::string lhs{"1234567890"};
   const std::string rhs{"0"};
   // TODO: fix multiply by zero (a lot of trailing zeroes)
-//  EXPECT_EQ("0", MultiplyImpl(lhs, rhs));
+  //  EXPECT_EQ("0", MultiplyImpl(lhs, rhs));
 }
 
 TEST(MpaMultiplyImpl, BothAreZeros)
@@ -43,7 +43,8 @@ TEST(MpaMultiplyImpl, LargeNumbers)
 {
   const std::string lhs{"1234567890123456789012345678901234567890"};
   const std::string rhs{"1000000000000000000000000000000000000000"};
-  const std::string res{"1234567890123456789012345678901234567890"
+  const std::string res{
+      "1234567890123456789012345678901234567890"
       "000000000000000000000000000000000000000"};
   EXPECT_EQ(res, MultiplyImpl(lhs, rhs));
 }

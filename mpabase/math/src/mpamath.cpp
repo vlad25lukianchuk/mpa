@@ -11,6 +11,8 @@ namespace mpa {
 namespace math {
 
 using mpa::core::IsAbsGreaterOrEqual;
+using mpa::core::IsAbsLess;
+using mpa::core::IsAbsEqual;
 using mpa::core::kBase;
 using mpa::core::Number;
 using mpa::core::Sign;
@@ -69,9 +71,7 @@ Number Divide(const Number& lhs, const Number& rhs)
     throw std::runtime_error{"Operation not permitted: Division by zero."};
   }
 
-  if (lhs.value().size() < rhs.value().size() ||
-      (lhs.value().size() == rhs.value().size() && lhs.value() < rhs.value())) {
-    // ZERO AGAIN
+  if (IsAbsLess(lhs.value(), rhs.value())) {
     return Number{"0"};
   }
 
@@ -221,44 +221,46 @@ string MultiplyImpl(const string& larger, const string& smaller) noexcept
 }
 
 string DivideImpl(const string& lhs, const string& rhs) noexcept
+// UGLY
 {
   string res;
 
-  // 1) find the fist number in lhs - lhs0 which is greter than rhs
+  // 1) find the fist number in lhs - lhs0 which is greter than of equal to rhs
   // 2) subtract from lhs0 rhs: rest = lhs0 - rhs. Continue untill rest > rhs
-  // 3) number of subtactions is the fist digit in result
-  // 4) concatenate rest with the next digit from lhs and continue 1)-3)
+  // 3) number of subtractions is the fist digit in result
+  // 4) concatenate rest with the next digit from lhs and continue 2)-3)
   // till lhs has digits.
   // 5) Discard rest if any
 
   auto l_it = lhs.begin();
   string lhs0;
 
-  // UGLY
+  // Find the first number in lhs which is greater than or equal to rhs
   while (l_it != lhs.end() && !IsAbsGreaterOrEqual(lhs0, rhs)) {
     lhs0 += *l_it++;
   }
 
-  while (l_it != lhs.end()) {
-    if (lhs0.empty()) {
-      while (l_it != lhs.end() && !IsAbsGreaterOrEqual(lhs0, rhs)) {
-        lhs0 += *l_it++;
-        res.push_back('0');
-      }
-    } else {
-      while (l_it != lhs.end() && !IsAbsGreaterOrEqual(lhs0, rhs)) {
-        lhs0 += *l_it++;
-      }
-    }
-    int counter{0};
+  while (true) {
+    // Find result
+    int subtraction_count{0};
     while (IsAbsGreaterOrEqual(lhs0, rhs)) {
       lhs0 = SubtractImpl(lhs0, rhs);
-      ++counter;
+      ++subtraction_count;
     }
-    if (counter) {
-      res.push_back(ToChar(counter));
+    // clear, if we do not have reminder
+    if (lhs0 == "0") {
+      lhs0.clear();
     }
+    res.push_back(ToChar(subtraction_count));
+
+    if (l_it == lhs.end()) {
+      break;
+    }
+
+    // add the next digit
+    lhs0 += *l_it++;
   }
+
   return res;
 }
 
@@ -269,6 +271,9 @@ string ReminderImpl(const string& lhs, const string& rhs) noexcept
   auto l_it = lhs.begin();
   string lhs0;
   while (l_it != lhs.end()) {
+    if (lhs0 == "0") {
+      lhs0.clear();
+    }
     while (l_it != lhs.end() && !IsAbsGreaterOrEqual(lhs0, rhs)) {
       lhs0 += *l_it++;
     }
@@ -276,7 +281,7 @@ string ReminderImpl(const string& lhs, const string& rhs) noexcept
       lhs0 = SubtractImpl(lhs0, rhs);
     }
   }
-  return lhs0.empty() ? "0" : lhs0;
+  return lhs0;
 }
 
 }  // namespace impl
