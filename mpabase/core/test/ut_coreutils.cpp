@@ -4,7 +4,7 @@
 #include <cctype>
 #include <iostream>
 
-#include "coreutils.h"
+#include "mpacoreutils.h"
 
 namespace char_interface {
 
@@ -28,7 +28,7 @@ constexpr int not_digits_size = not_digits.size();
 
 }  // namespace int_interface
 
-TEST(CoreUtils, IsDigit_ValidCharInput)
+TEST(MpaCoreUtils, IsDigit_ValidCharInput)
 {
   using char_interface::digits;
   for (auto d : digits) {
@@ -36,7 +36,7 @@ TEST(CoreUtils, IsDigit_ValidCharInput)
   }
 }
 
-TEST(CoreUtils, IsDigit_InvalidCharInput)
+TEST(MpaCoreUtils, IsDigit_InvalidCharInput)
 {
   using char_interface::not_digits;
   for (auto d : not_digits) {
@@ -44,7 +44,7 @@ TEST(CoreUtils, IsDigit_InvalidCharInput)
   }
 }
 
-TEST(CoreUtils, IsDigit_ValidIntInput)
+TEST(MpaCoreUtils, IsDigit_ValidIntInput)
 {
   using int_interface::digits;
   for (auto d : digits) {
@@ -52,7 +52,7 @@ TEST(CoreUtils, IsDigit_ValidIntInput)
   }
 }
 
-TEST(CoreUtils, IsDigit_InvalidIntInput)
+TEST(MpaCoreUtils, IsDigit_InvalidIntInput)
 {
   using int_interface::not_digits;
   for (auto d : not_digits) {
@@ -60,7 +60,7 @@ TEST(CoreUtils, IsDigit_InvalidIntInput)
   }
 }
 
-TEST(CoreUtils, ToChar_ValidInput)
+TEST(MpaCoreUtils, ToChar_ValidInput)
 {
   using char_interface::digits;
   using char_interface::digits_size;
@@ -69,7 +69,7 @@ TEST(CoreUtils, ToChar_ValidInput)
   }
 }
 
-TEST(CoreUtils, ToChar_InvalidInput)
+TEST(MpaCoreUtils, ToChar_InvalidInput)
 {
   using int_interface::not_digits;
   using int_interface::not_digits_size;
@@ -81,7 +81,7 @@ TEST(CoreUtils, ToChar_InvalidInput)
   }
 }
 
-TEST(CoreUtils, ToDec_ValidInput)
+TEST(MpaCoreUtils, ToDec_ValidInput)
 {
   using char_interface::digits;
   using char_interface::digits_size;
@@ -90,7 +90,7 @@ TEST(CoreUtils, ToDec_ValidInput)
   }
 }
 
-TEST(CoreUtils, ToDec_InvalidInput)
+TEST(MpaCoreUtils, ToDec_InvalidInput)
 {
   using char_interface::not_digits;
   using char_interface::not_digits_size;
@@ -100,7 +100,7 @@ TEST(CoreUtils, ToDec_InvalidInput)
   }
 }
 
-TEST(CoreUtils, IsAbsGreater_DiffSize)
+TEST(MpaCoreUtils, IsAbsGreater_DiffSize)
 {
   const std::string smaller{"1234"};
   const std::string greater{"12345"};
@@ -108,7 +108,7 @@ TEST(CoreUtils, IsAbsGreater_DiffSize)
   EXPECT_FALSE(mpa::core::IsAbsGreater(smaller, greater));
 }
 
-TEST(CoreUtils, IsAbsGreater_EqSize)
+TEST(MpaCoreUtils, IsAbsGreater_EqSize)
 {
   const std::string smaller{"1234"};
   const std::string greater{"1235"};
@@ -116,7 +116,7 @@ TEST(CoreUtils, IsAbsGreater_EqSize)
   EXPECT_FALSE(mpa::core::IsAbsGreater(smaller, greater));
 }
 
-TEST(CoreUtils, IsAbsGreater_EqSizeEqValue)
+TEST(MpaCoreUtils, IsAbsGreater_EqSizeEqValue)
 {
   const std::string smaller{"1234"};
   const std::string greater{"1234"};
@@ -124,7 +124,7 @@ TEST(CoreUtils, IsAbsGreater_EqSizeEqValue)
   EXPECT_FALSE(mpa::core::IsAbsGreater(smaller, greater));
 }
 
-TEST(CoreUtils, IsAbsLess_DiffSize)
+TEST(MpaCoreUtils, IsAbsLess_DiffSize)
 {
   const std::string smaller{"1234"};
   const std::string greater{"12345"};
@@ -132,7 +132,7 @@ TEST(CoreUtils, IsAbsLess_DiffSize)
   EXPECT_FALSE(mpa::core::IsAbsLess(greater, smaller));
 }
 
-TEST(CoreUtils, IsAbsLess_EqSize)
+TEST(MpaCoreUtils, IsAbsLess_EqSize)
 {
   const std::string smaller{"1234"};
   const std::string greater{"1235"};
@@ -140,7 +140,7 @@ TEST(CoreUtils, IsAbsLess_EqSize)
   EXPECT_FALSE(mpa::core::IsAbsLess(greater, smaller));
 }
 
-TEST(CoreUtils, IsAbsLess_EqSizeEqValue)
+TEST(MpaCoreUtils, IsAbsLess_EqSizeEqValue)
 {
   const std::string smaller{"1234"};
   const std::string greater{"1234"};
@@ -148,7 +148,7 @@ TEST(CoreUtils, IsAbsLess_EqSizeEqValue)
   EXPECT_FALSE(mpa::core::IsAbsLess(greater, smaller));
 }
 
-TEST(CoreUtils, IsAbsGreaterOrEqual_DiffSize)
+TEST(MpaCoreUtils, IsAbsGreaterOrEqual_DiffSize)
 {
   const std::string smaller{"1234"};
   const std::string greater{"12345"};
@@ -156,7 +156,7 @@ TEST(CoreUtils, IsAbsGreaterOrEqual_DiffSize)
   EXPECT_FALSE(mpa::core::IsAbsGreaterOrEqual(smaller, greater));
 }
 
-TEST(CoreUtils, IsAbsGreaterOrEqual_EqSize)
+TEST(MpaCoreUtils, IsAbsGreaterOrEqual_EqSize)
 {
   const std::string smaller{"1234"};
   const std::string greater{"1235"};
@@ -164,14 +164,14 @@ TEST(CoreUtils, IsAbsGreaterOrEqual_EqSize)
   EXPECT_FALSE(mpa::core::IsAbsGreaterOrEqual(smaller, greater));
 }
 
-TEST(CoreUtils, IsAbsGreaterOrEqual_EqSizeEqValue)
+TEST(MpaCoreUtils, IsAbsGreaterOrEqual_EqSizeEqValue)
 {
   const std::string smaller{"1234"};
   const std::string greater{"1234"};
   EXPECT_TRUE(mpa::core::IsAbsGreaterOrEqual(greater, smaller));
 }
 
-TEST(CoreUtils, IsAbsLessOrEqual_DiffSize)
+TEST(MpaCoreUtils, IsAbsLessOrEqual_DiffSize)
 {
   const std::string smaller{"1234"};
   const std::string greater{"12345"};
@@ -179,7 +179,7 @@ TEST(CoreUtils, IsAbsLessOrEqual_DiffSize)
   EXPECT_FALSE(mpa::core::IsAbsLessOrEqual(greater, smaller));
 }
 
-TEST(CoreUtils, IsAbsLessOrEqual_EqSize)
+TEST(MpaCoreUtils, IsAbsLessOrEqual_EqSize)
 {
   const std::string smaller{"1234"};
   const std::string greater{"1235"};
@@ -187,59 +187,59 @@ TEST(CoreUtils, IsAbsLessOrEqual_EqSize)
   EXPECT_FALSE(mpa::core::IsAbsLessOrEqual(greater, smaller));
 }
 
-TEST(CoreUtils, IsAbsLessOrEqual_EqSizeEqValue)
+TEST(MpaCoreUtils, IsAbsLessOrEqual_EqSizeEqValue)
 {
   const std::string smaller{"1234"};
   const std::string greater{"1234"};
   EXPECT_TRUE(mpa::core::IsAbsLessOrEqual(greater, smaller));
 }
 
-TEST(CoreUtils, IsAbsEqual_DiffSize)
+TEST(MpaCoreUtils, IsAbsEqual_DiffSize)
 {
   const std::string first{"12345"};
   const std::string second{"1234"};
   EXPECT_FALSE(mpa::core::IsAbsEqual(first, second));
 }
 
-TEST(CoreUtils, IsAbsEqual_EqSize)
+TEST(MpaCoreUtils, IsAbsEqual_EqSize)
 {
   const std::string first{"1235"};
   const std::string second{"1234"};
   EXPECT_FALSE(mpa::core::IsAbsEqual(first, second));
 }
 
-TEST(CoreUtils, IsAbsEqual_EqSizeEqValue)
+TEST(MpaCoreUtils, IsAbsEqual_EqSizeEqValue)
 {
   const std::string first{"1234"};
   const std::string second{"1234"};
   EXPECT_TRUE(mpa::core::IsAbsEqual(first, second));
 }
 
-TEST(CoreUtils, HasNonDigitSymbol_BelowSmallerLimit)
+TEST(MpaCoreUtils, HasNonDigitSymbol_BelowSmallerLimit)
 {
   const std::string num{"123/4"};
   EXPECT_TRUE(mpa::core::HasNonDigitSymbol(num));
 }
 
-TEST(CoreUtils, HasNonDigitSymbol_AboveHigherLimit)
+TEST(MpaCoreUtils, HasNonDigitSymbol_AboveHigherLimit)
 {
   const std::string num{"123:4"};
   EXPECT_TRUE(mpa::core::HasNonDigitSymbol(num));
 }
 
-TEST(CoreUtils, HasNonDigitSymbol_InRange)
+TEST(MpaCoreUtils, HasNonDigitSymbol_InRange)
 {
   const std::string num{"1234567890"};
   EXPECT_FALSE(mpa::core::HasNonDigitSymbol(num));
 }
 
-TEST(CoreUtils, IsNegative_Empty)
+TEST(MpaCoreUtils, IsNegative_Empty)
 {
   const std::string num;
   EXPECT_FALSE(mpa::core::IsNegative(num));
 }
 
-TEST(CoreUtils, IsNegative_False)
+TEST(MpaCoreUtils, IsNegative_False)
 {
   const std::string num1{"+"};
   const std::string num2{"_"};
@@ -247,7 +247,7 @@ TEST(CoreUtils, IsNegative_False)
   EXPECT_FALSE(mpa::core::IsNegative(num2));
 }
 
-TEST(CoreUtils, IsNegative_True)
+TEST(MpaCoreUtils, IsNegative_True)
 {
   const std::string num1{"-12345"};
   // IsNegative does not check the non-digit symbols
@@ -256,13 +256,13 @@ TEST(CoreUtils, IsNegative_True)
   EXPECT_TRUE(mpa::core::IsNegative(num2));
 }
 
-TEST(CoreUtils, IsPositive_Empty)
+TEST(MpaCoreUtils, IsPositive_Empty)
 {
   const std::string num;
   EXPECT_FALSE(mpa::core::IsPositive(num));
 }
 
-TEST(CoreUtils, IsPositive_False)
+TEST(MpaCoreUtils, IsPositive_False)
 {
   const std::string num1{"-"};
   const std::string num2{"_"};
@@ -270,7 +270,7 @@ TEST(CoreUtils, IsPositive_False)
   EXPECT_FALSE(mpa::core::IsPositive(num2));
 }
 
-TEST(CoreUtils, IsPositive_True)
+TEST(MpaCoreUtils, IsPositive_True)
 {
   const std::string num1{"+12345"};
   // Positive is either with plus sign at front or
@@ -280,19 +280,19 @@ TEST(CoreUtils, IsPositive_True)
   EXPECT_TRUE(mpa::core::IsPositive(num2));
 }
 
-TEST(CoreUtils, HasPlusSignAtFront_Empty)
+TEST(MpaCoreUtils, HasPlusSignAtFront_Empty)
 {
   const std::string num;
   EXPECT_FALSE(mpa::core::HasPlusSignAtFront(num));
 }
 
-TEST(CoreUtils, HasPlusSignAtFront_False)
+TEST(MpaCoreUtils, HasPlusSignAtFront_False)
 {
   const std::string num{"123"};
   EXPECT_FALSE(mpa::core::HasPlusSignAtFront(num));
 }
 
-TEST(CoreUtils, HasPlusSignAtFront_True)
+TEST(MpaCoreUtils, HasPlusSignAtFront_True)
 {
   // It does not check non-digit chars
   const std::string num{"+123abc%$"};

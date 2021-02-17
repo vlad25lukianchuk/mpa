@@ -5,15 +5,12 @@
 #include <string>
 #include <utility>
 
-#include "coreutils.h"
+#include "mpacoreutils.h"
 
 namespace mpa {
 namespace core {
 
 enum class Sign { kPlus, kMinus };
-
-// TODO: special case number ZERO should be presented
-// TODO: special case number ONE should be presented
 
 class Number {
  public:

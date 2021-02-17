@@ -4,7 +4,8 @@
 #include <string>
 #include <vector>
 
-#include "coreutils.h"
+#include "mpacoredefs.h"
+#include "mpacoreutils.h"
 #include "mpanumber.h"
 
 namespace mpa {
@@ -67,12 +68,12 @@ Number Multiply(const Number& lhs, const Number& rhs) noexcept
 
 Number Divide(const Number& lhs, const Number& rhs)
 {
-  if (rhs.value() == "0") {
+  if (rhs == mpa::core::kZero) {
     throw std::runtime_error{"Operation not permitted: Division by zero."};
   }
 
   if (IsAbsLess(lhs.value(), rhs.value())) {
-    return Number{"0"};
+    return mpa::core::kZero;
   }
 
   return lhs.sign() == rhs.sign()
@@ -82,7 +83,7 @@ Number Divide(const Number& lhs, const Number& rhs)
 
 Number Reminder(const Number& lhs, const Number& rhs)
 {
-  if (rhs.value() == "0") {
+  if (rhs == mpa::core::kZero) {
     throw std::runtime_error{
         "Operation not permitted: Division (reminder) by zero."};
   }

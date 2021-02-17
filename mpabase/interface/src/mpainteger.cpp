@@ -4,6 +4,7 @@
 #include <string>
 #include <utility>
 
+#include "mpacoredefs.h"
 #include "mpalog.h"
 #include "mpamath.h"
 #include "mpanumber.h"
@@ -51,14 +52,13 @@ Integer& Integer::operator%=(const Integer& rhs)
 
 Integer& Integer::operator++() noexcept
 {
-  MPANotImplemented() << "Integer::operator++()" << std::endl;
-  // TODO: NUMERIC 1!
+  number_ = mpa::math::Add(number_, mpa::core::kOne);
   return *this;
 }
 
 Integer& Integer::operator--() noexcept
 {
-  MPANotImplemented() << "Integer::operator--()" << std::endl;
+  number_ = mpa::math::Subtract(number_, mpa::core::kOne);
   return *this;
 }
 
