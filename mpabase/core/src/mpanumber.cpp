@@ -20,9 +20,6 @@ Number::Number(std::string value, Sign sign) noexcept
 
 Number VerifyNumber(string&& number)
 {
-  // TODO: if empty, mb zero?
-  // TODO: check trailing zeros
-  // TODO: clean trailing zeros?
   if (number.empty()) {
     throw std::runtime_error{
         "The number value is empty, thus consider as not a number"};
@@ -33,8 +30,17 @@ Number VerifyNumber(string&& number)
 
   if (IsNegative(value)) {
     sign = Sign::kMinus;
-    // unfortunate copy
-    value = {value.cbegin() + 1, value.cend()};
+    value.erase(value.cbegin());
+  }
+
+  // Values such as: 000-1234 are malformed
+  // Values such as: -000123456 are acceptable. Leading zeroes (after minus)
+  // are cleared
+  ClearLeadingZeroes(value);
+
+  if (value.empty()) {
+    // number contains only zeroes, we trim it to just zero
+    return Number{"0"};
   }
 
   if (HasNonDigitSymbol(value)) {

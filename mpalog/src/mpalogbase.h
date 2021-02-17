@@ -3,14 +3,7 @@
 
 #include <iostream>
 
-// TODO: implement more robust way, move to utils
-#define MPA_NO_COPY(cls)    \
-  cls(const cls&) = delete; \
-  cls& operator=(const cls&) = delete;
-
-#define MPA_NO_MOVE(cls) \
-  cls(cls&&) = delete;   \
-  cls& operator=(cls&&) = delete;
+#include "mpalogutils.h"
 
 namespace mpa {
 namespace log {
@@ -20,9 +13,11 @@ class BaseLogger {
   MPA_NO_COPY(BaseLogger)
   MPA_NO_MOVE(BaseLogger)
 
-  explicit BaseLogger(std::ostream& ost);
+  explicit BaseLogger(std::ostream& ost) noexcept;
   virtual ~BaseLogger() = default;
 
+  // TODO: currently noexcept, exception handling
+  // will be added later
   std::ostream& Debug() noexcept;
   std::ostream& Info() noexcept;
   std::ostream& Warning() noexcept;
@@ -42,7 +37,7 @@ class StandardLogger : public BaseLogger {
   static StandardLogger& Instance();
 
  private:
-  StandardLogger();
+  StandardLogger() noexcept;
 };
 
 }  // namespace log

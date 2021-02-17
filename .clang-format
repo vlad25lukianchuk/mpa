@@ -7,6 +7,11 @@ AllowShortCaseLabelsOnASingleLine: false
 AllowShortFunctionsOnASingleLine: Inline
 AllowShortIfStatementsOnASingleLine: false
 AllowShortLoopsOnASingleLine: false
+
+# Force pointers to the type for C++.
+DerivePointerAlignment: false
+PointerAlignment: Left
+
 BreakConstructorInitializers: BeforeComma
 BreakBeforeBraces: Custom
 BraceWrapping:

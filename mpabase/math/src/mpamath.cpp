@@ -62,6 +62,11 @@ Number Multiply(const Number& lhs, const Number& rhs) noexcept
   // 1) Both positive - result is positive
   // 2) Both negative - result is positive
   // 3) Different signs - result is negative
+
+  if (lhs == mpa::core::kZero || rhs == mpa::core::kZero) {
+    return mpa::core::kZero;
+  }
+
   return lhs.sign() == rhs.sign() ? impl::MultiplyHelper(lhs, rhs)
                                   : -impl::MultiplyHelper(lhs, rhs);
 }
@@ -113,8 +118,6 @@ Number SubtractHelper(const core::Number& lhs, const core::Number& rhs) noexcept
              : -Number{SubtractImpl(rhs.value(), lhs.value())};
 }
 
-// TODO: multiplication by zero does not work properly
-// (it results in many zeroes instead of one)
 Number MultiplyHelper(const Number& lhs, const Number& rhs) noexcept
 {
   // if we multiply larger by smaller, the number of additions is less

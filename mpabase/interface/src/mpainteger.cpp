@@ -1,11 +1,9 @@
 #include "mpainteger.h"
 
-#include <iostream>
 #include <string>
 #include <utility>
 
 #include "mpacoredefs.h"
-#include "mpalog.h"
 #include "mpamath.h"
 #include "mpanumber.h"
 

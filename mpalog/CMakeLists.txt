@@ -10,3 +10,7 @@ mpa_add_shared_library(
     PRIVATE_LINK_LIB mpalog_object
     PUBLIC_INCL include
     )
+
+if(${BUILD_TESTING})
+    add_subdirectory(test)
+endif()

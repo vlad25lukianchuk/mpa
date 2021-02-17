@@ -48,6 +48,7 @@ bool IsNegative(const std::string& number) noexcept;
 bool IsPositive(const std::string& number) noexcept;
 bool HasNonDigitSymbol(const std::string& value) noexcept;
 bool HasPlusSignAtFront(const std::string& number) noexcept;
+void ClearLeadingZeroes(std::string& number) noexcept;
 
 }  // namespace core
 }  // namespace mpa

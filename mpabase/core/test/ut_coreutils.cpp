@@ -298,3 +298,28 @@ TEST(MpaCoreUtils, HasPlusSignAtFront_True)
   const std::string num{"+123abc%$"};
   EXPECT_TRUE(mpa::core::HasPlusSignAtFront(num));
 }
+
+TEST(MpaCoreUtils, ClearLeadingZeroes_NoLeadingZeroes)
+{
+  std::string num{"abc123"};
+  mpa::core::ClearLeadingZeroes(num);
+  EXPECT_EQ("abc123", num);
+}
+
+TEST(MpaCoreUtils, ClearLeadingZeroes_LeadingZeroes)
+{
+  std::string num{"000abc000123"};
+  mpa::core::ClearLeadingZeroes(num);
+  EXPECT_EQ("abc000123", num);
+
+  num = "0-000abc";
+  mpa::core::ClearLeadingZeroes(num);
+  EXPECT_EQ("-000abc", num);
+}
+
+TEST(MpaCoreUtils, ClearLeadingZeroes_AllZeroes)
+{
+  std::string num{"00000000"};
+  mpa::core::ClearLeadingZeroes(num);
+  EXPECT_TRUE(num.empty());
+}

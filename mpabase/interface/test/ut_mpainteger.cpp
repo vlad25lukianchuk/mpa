@@ -143,6 +143,132 @@ TEST(MpaInteger, PutIntoStreamOpNegative)
   EXPECT_EQ("-123", oss.str());
 }
 
+TEST(MpaInteger, PrefixIncrementOpPositive)
+{
+  // ++12
+  Integer num{"12"};
+  const Integer expected{"13"};
+  const auto actual = ++num;
+  EXPECT_EQ(actual, expected);
+}
+
+TEST(MpaInteger, PrefixIncrementOpNegative)
+{
+  // ++(-12)
+  Integer num{"-12"};
+  const Integer expected{"-11"};
+  const auto actual = ++num;
+  EXPECT_EQ(actual, expected);
+}
+
+TEST(MpaInteger, PrefixIncrementOpNegativeToPositive)
+{
+  // ++(-1)
+  Integer num{"-1"};
+  const Integer expected{"0"};
+  const auto actual = ++num;
+  EXPECT_EQ(actual, expected);
+}
+
+TEST(MpaInteger, PrefixDecrementOpPositive)
+{
+  // --12
+  Integer num{"12"};
+  const Integer expected{"11"};
+  const auto actual = --num;
+  EXPECT_EQ(actual, expected);
+}
+
+TEST(MpaInteger, PrefixDecrementOpNegative)
+{
+  // --(-12)
+  Integer num{"-12"};
+  const Integer expected{"-13"};
+  const auto actual = --num;
+  EXPECT_EQ(actual, expected);
+}
+
+TEST(MpaInteger, PrefixDecrementOpPositiveToNegative)
+{
+  // --0
+  Integer num{"0"};
+  const Integer expected{"-1"};
+  const auto actual = --num;
+  EXPECT_EQ(actual, expected);
+}
+
+TEST(MpaInteger, PostfixIncrementOpPositive)
+{
+  // 12++
+  Integer num{"12"};
+  const auto old = num;
+  const Integer expected{"13"};
+
+  const auto actual = num++;
+  EXPECT_EQ(actual, old);
+  EXPECT_EQ(num, expected);
+}
+
+TEST(MpaInteger, PostfixIncrementOpNegative)
+{
+  // (-12)++
+  Integer num{"-12"};
+  const auto old = num;
+  const Integer expected{"-11"};
+
+  const auto actual = num++;
+  EXPECT_EQ(actual, old);
+  EXPECT_EQ(num, expected);
+}
+
+TEST(MpaInteger, PostfixIncrementOpNegativeToPositive)
+{
+  // (-1)++
+  Integer num{"-1"};
+  const auto old = num;
+  const Integer expected{"0"};
+
+  const auto actual = num++;
+  EXPECT_EQ(actual, old);
+  EXPECT_EQ(num, expected);
+}
+
+TEST(MpaInteger, PostfixDecrementOpPositive)
+{
+  // 12--
+  Integer num{"12"};
+  const auto old = num;
+  const Integer expected{"11"};
+
+  const auto actual = num--;
+  EXPECT_EQ(actual, old);
+  EXPECT_EQ(num, expected);
+}
+
+TEST(MpaInteger, PostfixDecrementOpNegative)
+{
+  // (-12)--
+  Integer num{"-12"};
+  const auto old = num;
+  const Integer expected{"-13"};
+
+  const auto actual = num--;
+  EXPECT_EQ(actual, old);
+  EXPECT_EQ(num, expected);
+}
+
+TEST(MpaInteger, PostfixDecrementOpPositiveToNegative)
+{
+  // 0--
+  Integer num{"0"};
+  const auto old = num;
+  const Integer expected{"-1"};
+
+  const auto actual = num--;
+  EXPECT_EQ(actual, old);
+  EXPECT_EQ(num, expected);
+}
+
 TEST(MpaInteger, AddIntegersSameSignPositive)
 {
   // 1234567890 + 1234567890
@@ -300,9 +426,7 @@ TEST(MpaInteger, MultiplyIntegersDiffSignRhsIsNegative)
   EXPECT_EQ(res, lhs * rhs);
 }
 
-// TODO: these are not work as expected,
-// when implementation is fixed, it must be enabled
-TEST(MpaInteger, DISABLED_MultiplyIntegersLhsIsZero)
+TEST(MpaInteger, MultiplyIntegersLhsIsZero)
 {
   // 0 * 12
   Integer lhs{"0"};
@@ -311,9 +435,7 @@ TEST(MpaInteger, DISABLED_MultiplyIntegersLhsIsZero)
   EXPECT_EQ(res, lhs * rhs);
 }
 
-// TODO: these are not work as expected,
-// when implementation is fixed, it must be enabled
-TEST(MpaInteger, DISABLED_MultiplyIntegersRhsIsZero)
+TEST(MpaInteger, MultiplyIntegersRhsIsZero)
 {
   // 12 * 0
   Integer lhs{"12"};
@@ -328,6 +450,24 @@ TEST(MpaInteger, MultiplyIntegersZeroes)
   Integer lhs{"0"};
   Integer rhs{"0"};
   Integer res{"0"};
+  EXPECT_EQ(res, lhs * rhs);
+}
+
+TEST(MpaInteger, MultiplyIntegersLhsIsOne)
+{
+  // 1 * 12
+  Integer lhs{"1"};
+  Integer rhs{"12"};
+  Integer res{"12"};
+  EXPECT_EQ(res, lhs * rhs);
+}
+
+TEST(MpaInteger, MultiplyIntegersRhsIsOne)
+{
+  // 12 * 1
+  Integer lhs{"12"};
+  Integer rhs{"1"};
+  Integer res{"12"};
   EXPECT_EQ(res, lhs * rhs);
 }
 

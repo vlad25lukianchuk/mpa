@@ -206,23 +206,23 @@ TEST(MpaNumber, PutIntoStreamOpNegative)
 
 TEST(MpaNumber, VerifyNumber_EmptyValue)
 {
-  EXPECT_THROW(mpa::core::VerifyNumber(""), std::runtime_error);
+  ASSERT_THROW(mpa::core::VerifyNumber(""), std::runtime_error);
 }
 
 TEST(MpaNumber, VerifyNumber_PositiveHasNonDigitsSymbols)
 {
-  EXPECT_THROW(mpa::core::VerifyNumber("1-234"), std::runtime_error);
-  EXPECT_THROW(mpa::core::VerifyNumber("12a34"), std::runtime_error);
-  EXPECT_THROW(mpa::core::VerifyNumber("abCd"), std::runtime_error);
-  EXPECT_THROW(mpa::core::VerifyNumber("$123\\"), std::runtime_error);
+  ASSERT_THROW(mpa::core::VerifyNumber("1-234"), std::runtime_error);
+  ASSERT_THROW(mpa::core::VerifyNumber("12a34"), std::runtime_error);
+  ASSERT_THROW(mpa::core::VerifyNumber("abCd"), std::runtime_error);
+  ASSERT_THROW(mpa::core::VerifyNumber("$123\\"), std::runtime_error);
 }
 
 TEST(MpaNumber, VerifyNumber_NegativeHasNonDigitsSymbols)
 {
-  EXPECT_THROW(mpa::core::VerifyNumber("--234"), std::runtime_error);
-  EXPECT_THROW(mpa::core::VerifyNumber("-12a34"), std::runtime_error);
-  EXPECT_THROW(mpa::core::VerifyNumber("-abCd"), std::runtime_error);
-  EXPECT_THROW(mpa::core::VerifyNumber("-$\\"), std::runtime_error);
+  ASSERT_THROW(mpa::core::VerifyNumber("--234"), std::runtime_error);
+  ASSERT_THROW(mpa::core::VerifyNumber("-12a34"), std::runtime_error);
+  ASSERT_THROW(mpa::core::VerifyNumber("-abCd"), std::runtime_error);
+  ASSERT_THROW(mpa::core::VerifyNumber("-$\\"), std::runtime_error);
 }
 
 TEST(MpaNumber, VerifyNumber_PositiveValueCorrect)
@@ -232,7 +232,7 @@ TEST(MpaNumber, VerifyNumber_PositiveValueCorrect)
     EXPECT_EQ(num.value(), "123456789");
     EXPECT_EQ(num.sign(), Sign::kPlus);
   };
-  EXPECT_NO_THROW(statements());
+  ASSERT_NO_THROW(statements());
 }
 
 TEST(MpaNumber, VerifyNumber_NegativeValueCorrect)
@@ -242,5 +242,44 @@ TEST(MpaNumber, VerifyNumber_NegativeValueCorrect)
     EXPECT_EQ(num.value(), "123456789");
     EXPECT_EQ(num.sign(), Sign::kMinus);
   };
-  EXPECT_NO_THROW(statements());
+  ASSERT_NO_THROW(statements());
+}
+
+TEST(MpaNumber, VerifyNumber_LeadingZeroesCorrect)
+{
+  auto statements = []() {
+    const Number positive_num = mpa::core::VerifyNumber("000123456789000");
+    const Number negative_num = mpa::core::VerifyNumber("-000000123456789000");
+    EXPECT_EQ(positive_num.value(), "123456789000");
+    EXPECT_EQ(positive_num.sign(), Sign::kPlus);
+    EXPECT_EQ(negative_num.value(), "123456789000");
+    EXPECT_EQ(negative_num.sign(), Sign::kMinus);
+  };
+  ASSERT_NO_THROW(statements());
+}
+
+TEST(MpaNumber, VerifyNumber_LeadingZeroesMalformed)
+{
+  ASSERT_THROW(mpa::core::VerifyNumber("00o0123456789000"), std::runtime_error);
+  ASSERT_THROW(mpa::core::VerifyNumber("00-00000123456789000"),
+               std::runtime_error);
+}
+
+TEST(MpaNumber, VerifyNumber_LeadingZeroesAllZeroesCorrect)
+{
+  auto statements = []() {
+    const Number positive_num = mpa::core::VerifyNumber("0000000");
+    const Number negative_num = mpa::core::VerifyNumber("-0000000");
+    EXPECT_EQ(positive_num.value(), "0");
+    EXPECT_EQ(positive_num.sign(), Sign::kPlus);
+    EXPECT_EQ(negative_num.value(), "0");
+    EXPECT_EQ(negative_num.sign(), Sign::kPlus);
+  };
+  ASSERT_NO_THROW(statements());
+}
+
+TEST(MpaNumber, VerifyNumber_LeadingZeroesAllZeroesMalformed)
+{
+  ASSERT_THROW(mpa::core::VerifyNumber("0o0000"), std::runtime_error);
+  ASSERT_THROW(mpa::core::VerifyNumber("0-0000"), std::runtime_error);
 }
