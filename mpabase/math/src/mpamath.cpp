@@ -10,9 +10,9 @@
 namespace mpa {
 namespace math {
 
+using mpa::core::IsAbsEqual;
 using mpa::core::IsAbsGreaterOrEqual;
 using mpa::core::IsAbsLess;
-using mpa::core::IsAbsEqual;
 using mpa::core::kBase;
 using mpa::core::Number;
 using mpa::core::Sign;

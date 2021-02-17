@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 
-#include <stdexcept>
 #include <sstream>
+#include <stdexcept>
 
 #include "mpainteger.h"
 
