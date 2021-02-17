@@ -24,12 +24,12 @@ TEST(MpaMultiplyImpl, SameSizes)
   EXPECT_EQ("144", MultiplyImpl(lhs, rhs));
 }
 
-TEST(MpaMultiplyImpl, MultiplyByZero)
+// TODO: fix multiply by zero (a lot of trailing zeroes)
+TEST(MpaMultiplyImpl, DISABLED_MultiplyByZero)
 {
   const std::string lhs{"1234567890"};
   const std::string rhs{"0"};
-  // TODO: fix multiply by zero (a lot of trailing zeroes)
-  //  EXPECT_EQ("0", MultiplyImpl(lhs, rhs));
+  EXPECT_EQ("0", MultiplyImpl(lhs, rhs));
 }
 
 TEST(MpaMultiplyImpl, BothAreZeros)

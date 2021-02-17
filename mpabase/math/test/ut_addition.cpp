@@ -142,7 +142,7 @@ TEST(MpaAdd, DiffSignLhsNegativeEqValues)
   // -123 + 123
   const Number lhs{"123", Sign::kMinus};
   const Number rhs{"123", Sign::kPlus};
-  EXPECT_EQ((Number{"0", Sign::kMinus}), Add(lhs, rhs));
+  EXPECT_EQ((Number{"0"}), Add(lhs, rhs));
 }
 
 TEST(MpaAdd, DiffSignRhsNegativeRhsValueGreater)
@@ -166,5 +166,5 @@ TEST(MpaAdd, DiffSignRhsNegativeEqValues)
   // 123 + (-123)
   const Number lhs{"123", Sign::kPlus};
   const Number rhs{"123", Sign::kMinus};
-  EXPECT_EQ((Number{"0", Sign::kMinus}), Add(lhs, rhs));
+  EXPECT_EQ((Number{"0"}), Add(lhs, rhs));
 }

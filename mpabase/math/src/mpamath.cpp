@@ -107,7 +107,7 @@ Number AddHelper(const Number& lhs, const Number& rhs) noexcept
 
 Number SubtractHelper(const core::Number& lhs, const core::Number& rhs) noexcept
 {
-  return core::IsAbsGreater(lhs.value(), rhs.value())
+  return core::IsAbsGreaterOrEqual(lhs.value(), rhs.value())
              ? Number{SubtractImpl(lhs.value(), rhs.value())}
              : -Number{SubtractImpl(rhs.value(), lhs.value())};
 }
