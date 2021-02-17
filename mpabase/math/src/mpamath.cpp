@@ -80,16 +80,15 @@ Number Divide(const Number& lhs, const Number& rhs)
              : -Number{impl::DivideImpl(lhs.value(), rhs.value())};
 }
 
-core::Number Reminder(const core::Number& lhs, const core::Number& rhs)
+Number Reminder(const Number& lhs, const Number& rhs)
 {
-  if (rhs.value() == "0" || rhs.value() == "-0" || rhs.value() == "+0") {
+  if (rhs.value() == "0") {
     throw std::runtime_error{
         "Operation not permitted: Division (reminder) by zero."};
   }
 
-  if (lhs.value().size() < rhs.value().size() ||
-      (lhs.value().size() == rhs.value().size() && lhs.value() < rhs.value())) {
-    return rhs;
+  if (IsAbsLess(lhs.value(), rhs.value())) {
+    return lhs;
   }
 
   return lhs.sign() == rhs.sign()

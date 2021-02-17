@@ -23,3 +23,9 @@ mpa_add_unittest(
     TARGET_SOURCES ut_division.cpp
     LINK_LIBS mpamath gtest_main
     )
+
+mpa_add_unittest(
+    NAME reminder
+    TARGET_SOURCES ut_reminder.cpp
+    LINK_LIBS mpamath gtest_main
+    )
