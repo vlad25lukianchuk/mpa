@@ -6,6 +6,7 @@
 
 #include "mpacoredefs.h"
 #include "mpacoreutils.h"
+#include "mpaexcept.h"
 #include "mpanumber.h"
 
 namespace mpa {
@@ -74,7 +75,8 @@ Number Multiply(const Number& lhs, const Number& rhs) noexcept
 Number Divide(const Number& lhs, const Number& rhs)
 {
   if (rhs == mpa::core::kZero) {
-    throw std::runtime_error{"Operation not permitted: Division by zero."};
+    throw mpa::error::DivisionByZero{
+        "Operation not permitted: Division by zero."};
   }
 
   if (IsAbsLess(lhs.value(), rhs.value())) {
@@ -89,7 +91,7 @@ Number Divide(const Number& lhs, const Number& rhs)
 Number Reminder(const Number& lhs, const Number& rhs)
 {
   if (rhs == mpa::core::kZero) {
-    throw std::runtime_error{
+    throw mpa::error::DivisionByZero{
         "Operation not permitted: Division (reminder) by zero."};
   }
 

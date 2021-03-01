@@ -9,5 +9,5 @@ mpa_add_unittest(
 mpa_add_unittest(
     NAME mpanumber
     TARGET_SOURCES ut_mpanumber.cpp
-    LINK_LIBS mpacore gtest_main
+    LINK_LIBS mpacore mpaerror gtest_main
     )

@@ -21,11 +21,11 @@ mpa_add_unittest(
 mpa_add_unittest(
     NAME division
     TARGET_SOURCES ut_division.cpp
-    LINK_LIBS mpamath gtest_main
+    LINK_LIBS mpamath mpaerror gtest_main
     )
 
 mpa_add_unittest(
     NAME reminder
     TARGET_SOURCES ut_reminder.cpp
-    LINK_LIBS mpamath gtest_main
+    LINK_LIBS mpamath mpaerror gtest_main
     )

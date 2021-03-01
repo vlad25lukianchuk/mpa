@@ -6,7 +6,7 @@ mpa_add_shared_library(
     PUBLIC_INCL include
     PRIVATE_INCL src/
     PUBLIC_LINK_LIB mpacore
-    PRIVATE_LINK_LIB mpalog
+    PRIVATE_LINK_LIB mpalog mpaerror
     )
 
 if(${BUILD_TESTING})

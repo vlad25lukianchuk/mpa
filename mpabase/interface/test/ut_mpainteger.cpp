@@ -3,6 +3,7 @@
 #include <sstream>
 #include <stdexcept>
 
+#include "mpaexcept.h"
 #include "mpainteger.h"
 
 using mpa::Integer;
@@ -15,13 +16,13 @@ TEST(MpaInteger, CtrNoThrow)
 
 TEST(MpaInteger, CtrNotNumbers)
 {
-  ASSERT_THROW(Integer num{"--1234567890"}, std::runtime_error);
-  ASSERT_THROW(Integer num{"-1a234567890"}, std::runtime_error);
-  ASSERT_THROW(Integer num{"1234567890-"}, std::runtime_error);
-  ASSERT_THROW(Integer num{"-12%@34567890"}, std::runtime_error);
-  ASSERT_THROW(Integer num{"12345ABX67890"}, std::runtime_error);
-  ASSERT_THROW(Integer num{"abcdefghi"}, std::runtime_error);
-  ASSERT_THROW(Integer num{"1a234567890"}, std::runtime_error);
+  ASSERT_THROW(Integer num{"--1234567890"}, mpa::error::InvalidNumber);
+  ASSERT_THROW(Integer num{"-1a234567890"}, mpa::error::InvalidNumber);
+  ASSERT_THROW(Integer num{"1234567890-"}, mpa::error::InvalidNumber);
+  ASSERT_THROW(Integer num{"-12%@34567890"}, mpa::error::InvalidNumber);
+  ASSERT_THROW(Integer num{"12345ABX67890"}, mpa::error::InvalidNumber);
+  ASSERT_THROW(Integer num{"abcdefghi"}, mpa::error::InvalidNumber);
+  ASSERT_THROW(Integer num{"1a234567890"}, mpa::error::InvalidNumber);
 }
 
 TEST(MpaInteger, EqualOp)
@@ -529,7 +530,7 @@ TEST(MpaInteger, DivideIntegersRhsIsZero)
   // 12 / 0
   Integer lhs{"144"};
   Integer rhs{"0"};
-  EXPECT_THROW(lhs / rhs, std::runtime_error);
+  EXPECT_THROW(lhs / rhs, mpa::error::DivisionByZero);
 }
 
 TEST(MpaInteger, DivideIntegersZeroes)
@@ -537,7 +538,7 @@ TEST(MpaInteger, DivideIntegersZeroes)
   // 0 / 0
   Integer lhs{"0"};
   Integer rhs{"0"};
-  EXPECT_THROW(lhs / rhs, std::runtime_error);
+  EXPECT_THROW(lhs / rhs, mpa::error::DivisionByZero);
 }
 
 TEST(MpaInteger, IntegerDivision)
@@ -599,7 +600,7 @@ TEST(MpaInteger, GetReminderRhsIsZero)
   // 26 % 0
   Integer lhs{"26"};
   Integer rhs{"0"};
-  EXPECT_THROW(lhs % rhs, std::runtime_error);
+  EXPECT_THROW(lhs % rhs, mpa::error::DivisionByZero);
 }
 
 TEST(MpaInteger, GetReminderZeroes)
@@ -607,5 +608,5 @@ TEST(MpaInteger, GetReminderZeroes)
   // 0 % 0
   Integer lhs{"0"};
   Integer rhs{"0"};
-  EXPECT_THROW(lhs % rhs, std::runtime_error);
+  EXPECT_THROW(lhs % rhs, mpa::error::DivisionByZero);
 }

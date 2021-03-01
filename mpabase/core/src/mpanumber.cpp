@@ -2,10 +2,10 @@
 
 #include <algorithm>
 #include <sstream>
-#include <stdexcept>
 #include <string>
 #include <utility>
 
+#include "mpaexcept.h"
 #include "mpalog.h"
 
 using std::string;
@@ -21,7 +21,7 @@ Number::Number(std::string value, Sign sign) noexcept
 Number VerifyNumber(string&& number)
 {
   if (number.empty()) {
-    throw std::runtime_error{
+    throw mpa::error::InvalidArgument{
         "The number value is empty, thus consider as not a number"};
   }
 
@@ -44,9 +44,8 @@ Number VerifyNumber(string&& number)
   }
 
   if (HasNonDigitSymbol(value)) {
-    std::ostringstream oss;
-    oss << "Number: " << number << " contains non-digit symbols";
-    throw std::runtime_error{oss.str()};
+    throw mpa::error::InvalidNumber{"Number: " + number +
+                                    " contains non-digit symbols"};
   }
 
   return Number{std::move(value), sign};

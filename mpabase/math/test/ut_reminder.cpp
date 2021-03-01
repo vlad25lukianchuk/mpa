@@ -3,6 +3,7 @@
 #include <stdexcept>
 #include <string>
 
+#include "mpaexcept.h"
 #include "mpamath.h"
 #include "mpanumber.h"
 
@@ -51,7 +52,7 @@ TEST(MpaReminder, RhsIsZero)
   // 12 % 0
   const Number lhs{"12", Sign::kPlus};
   const Number rhs{"0"};
-  EXPECT_THROW(Reminder(lhs, rhs), std::runtime_error);
+  EXPECT_THROW(Reminder(lhs, rhs), mpa::error::DivisionByZero);
 }
 
 TEST(MpaReminder, LhsIsZero)

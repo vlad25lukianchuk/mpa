@@ -3,6 +3,7 @@
 #include <stdexcept>
 #include <string>
 
+#include "mpaexcept.h"
 #include "mpamath.h"
 #include "mpanumber.h"
 
@@ -65,7 +66,7 @@ TEST(MpaDivide, RhsIsZero)
   // 12 / 0
   const Number lhs{"12", Sign::kPlus};
   const Number rhs{"0"};
-  EXPECT_THROW(Divide(lhs, rhs), std::runtime_error);
+  EXPECT_THROW(Divide(lhs, rhs), mpa::error::DivisionByZero);
 }
 
 TEST(MpaDivide, LhsIsZero)

@@ -3,6 +3,7 @@
 #include <sstream>
 #include <stdexcept>
 
+#include "mpaexcept.h"
 #include "mpanumber.h"
 
 using mpa::core::Number;
@@ -206,23 +207,23 @@ TEST(MpaNumber, PutIntoStreamOpNegative)
 
 TEST(MpaNumber, VerifyNumber_EmptyValue)
 {
-  ASSERT_THROW(mpa::core::VerifyNumber(""), std::runtime_error);
+  ASSERT_THROW(mpa::core::VerifyNumber(""), mpa::error::InvalidArgument);
 }
 
 TEST(MpaNumber, VerifyNumber_PositiveHasNonDigitsSymbols)
 {
-  ASSERT_THROW(mpa::core::VerifyNumber("1-234"), std::runtime_error);
-  ASSERT_THROW(mpa::core::VerifyNumber("12a34"), std::runtime_error);
-  ASSERT_THROW(mpa::core::VerifyNumber("abCd"), std::runtime_error);
-  ASSERT_THROW(mpa::core::VerifyNumber("$123\\"), std::runtime_error);
+  ASSERT_THROW(mpa::core::VerifyNumber("1-234"), mpa::error::InvalidNumber);
+  ASSERT_THROW(mpa::core::VerifyNumber("12a34"), mpa::error::InvalidNumber);
+  ASSERT_THROW(mpa::core::VerifyNumber("abCd"), mpa::error::InvalidNumber);
+  ASSERT_THROW(mpa::core::VerifyNumber("$123\\"), mpa::error::InvalidNumber);
 }
 
 TEST(MpaNumber, VerifyNumber_NegativeHasNonDigitsSymbols)
 {
-  ASSERT_THROW(mpa::core::VerifyNumber("--234"), std::runtime_error);
-  ASSERT_THROW(mpa::core::VerifyNumber("-12a34"), std::runtime_error);
-  ASSERT_THROW(mpa::core::VerifyNumber("-abCd"), std::runtime_error);
-  ASSERT_THROW(mpa::core::VerifyNumber("-$\\"), std::runtime_error);
+  ASSERT_THROW(mpa::core::VerifyNumber("--234"), mpa::error::InvalidNumber);
+  ASSERT_THROW(mpa::core::VerifyNumber("-12a34"), mpa::error::InvalidNumber);
+  ASSERT_THROW(mpa::core::VerifyNumber("-abCd"), mpa::error::InvalidNumber);
+  ASSERT_THROW(mpa::core::VerifyNumber("-$\\"), mpa::error::InvalidNumber);
 }
 
 TEST(MpaNumber, VerifyNumber_PositiveValueCorrect)
@@ -260,9 +261,10 @@ TEST(MpaNumber, VerifyNumber_LeadingZeroesCorrect)
 
 TEST(MpaNumber, VerifyNumber_LeadingZeroesMalformed)
 {
-  ASSERT_THROW(mpa::core::VerifyNumber("00o0123456789000"), std::runtime_error);
+  ASSERT_THROW(mpa::core::VerifyNumber("00o0123456789000"),
+               mpa::error::InvalidNumber);
   ASSERT_THROW(mpa::core::VerifyNumber("00-00000123456789000"),
-               std::runtime_error);
+               mpa::error::InvalidNumber);
 }
 
 TEST(MpaNumber, VerifyNumber_LeadingZeroesAllZeroesCorrect)
@@ -280,6 +282,6 @@ TEST(MpaNumber, VerifyNumber_LeadingZeroesAllZeroesCorrect)
 
 TEST(MpaNumber, VerifyNumber_LeadingZeroesAllZeroesMalformed)
 {
-  ASSERT_THROW(mpa::core::VerifyNumber("0o0000"), std::runtime_error);
-  ASSERT_THROW(mpa::core::VerifyNumber("0-0000"), std::runtime_error);
+  ASSERT_THROW(mpa::core::VerifyNumber("0o0000"), mpa::error::InvalidNumber);
+  ASSERT_THROW(mpa::core::VerifyNumber("0-0000"), mpa::error::InvalidNumber);
 }
