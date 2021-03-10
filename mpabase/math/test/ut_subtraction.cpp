@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 
 #include "mpamath.h"
+#include "mpamathimpl.h"
 #include "mpanumber.h"
 
 using mpa::core::Number;

@@ -3,6 +3,7 @@
 #include <string>
 
 #include "mpamath.h"
+#include "mpamathimpl.h"
 #include "mpanumber.h"
 
 using mpa::core::Number;
