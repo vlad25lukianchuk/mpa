@@ -5,47 +5,53 @@
 
 #include "mpaexcept.h"
 #include "mpamath.h"
-#include "mpamathimpl.h"
 #include "mpanumber.h"
+#include "mpastandardalgorithmsimpl.h"
 
 using mpa::core::Number;
 using mpa::core::Sign;
 using mpa::math::Reminder;
-using mpa::math::impl::ReminderImpl;
+using mpa::math::impl::StandardAlgorithmsImpl;
 
-TEST(MpaReminderImpl, SameSize)
+class MpaReminderImplTest : public ::testing::Test {
+ protected:
+  StandardAlgorithmsImpl impl_;
+};
+
+TEST_F(MpaReminderImplTest, SameSize)
 {
   const std::string lhs{"49"};
   const std::string rhs{"12"};
-  EXPECT_EQ("1", ReminderImpl(lhs, rhs));
+  EXPECT_EQ("1", impl_.Reminder(lhs, rhs));
 }
 
-TEST(MpaReminderImpl, DiffSize)
+TEST_F(MpaReminderImplTest, DiffSize)
 {
   const std::string lhs{"145"};
   const std::string rhs{"12"};
-  EXPECT_EQ("1", ReminderImpl(lhs, rhs));
+  EXPECT_EQ("1", impl_.Reminder(lhs, rhs));
 }
 
-TEST(MpaReminderImpl, MultipleDigitReminder)
+TEST_F(MpaReminderImplTest, MultipleDigitReminder)
 {
   const std::string lhs{"1211"};
   const std::string rhs{"12"};
-  EXPECT_EQ("11", ReminderImpl(lhs, rhs));
+  EXPECT_EQ("11", impl_.Reminder(lhs, rhs));
 }
 
-TEST(MpaReminderImpl, SameValues)
+TEST_F(MpaReminderImplTest, SameValues)
 {
   const std::string lhs{"1211"};
   const std::string rhs{"1211"};
-  EXPECT_EQ("0", ReminderImpl(lhs, rhs));
+  EXPECT_EQ("0", impl_.Reminder(lhs, rhs));
 }
 
-TEST(MpaReminderImpl, LargeNumbers)
+TEST_F(MpaReminderImplTest, LargeNumbers)
 {
   const std::string lhs{"1234567890123456789012345678901234567890"};
   const std::string rhs{"1000000000000000000000000000000000000000"};
-  EXPECT_EQ("234567890123456789012345678901234567890", ReminderImpl(lhs, rhs));
+  EXPECT_EQ("234567890123456789012345678901234567890",
+            impl_.Reminder(lhs, rhs));
 }
 
 TEST(MpaReminder, RhsIsZero)

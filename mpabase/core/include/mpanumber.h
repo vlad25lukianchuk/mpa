@@ -18,7 +18,7 @@ class Number {
   explicit Number(std::string value, Sign sign = Sign::kPlus) noexcept;
 
   const std::string& value() const noexcept { return value_; }
-  Sign sign() const noexcept { return sign_; }
+  constexpr Sign sign() const noexcept { return sign_; }
 
   friend Number operator-(const Number&) noexcept;
   friend Number operator-(Number&&) noexcept;

@@ -1,9 +1,8 @@
-#include "mpamathimpl.h"
+#include "mpastandardalgorithmsimpl.h"
 
 #include <string>
 #include <vector>
 
-#include "mpacoredefs.h"
 #include "mpacoreutils.h"
 
 namespace mpa {
@@ -12,24 +11,22 @@ namespace impl {
 
 using mpa::core::IsAbsGreaterOrEqual;
 using mpa::core::kBase;
-using mpa::core::Sign;
 using mpa::core::ToChar;
 using mpa::core::ToDec;
 
-using std::string;
-using std::vector;
-
-string AddImpl(const string& larger, const string& smaller) noexcept
+std::string StandardAlgorithmsImpl::Add(const std::string& lhs,
+                                        const std::string& rhs) const noexcept
 {
-  string reverse_res;
-  reverse_res.reserve(larger.size());
+  // consider lhs is larger number than rhs
+  std::string reverse_res;
+  reverse_res.reserve(lhs.size());
 
-  auto s_it = smaller.rbegin();
+  auto s_it = rhs.rbegin();
   int carry{0};
 
-  for (auto l_it = larger.rbegin(); l_it != larger.rend(); ++l_it) {
+  for (auto l_it = lhs.rbegin(); l_it != lhs.rend(); ++l_it) {
     const int base = ToDec(*l_it) + carry;
-    const int addition = s_it != smaller.rend() ? ToDec(*s_it++) : 0;
+    const int addition = s_it != rhs.rend() ? ToDec(*s_it++) : 0;
     const int res = (base + addition) < kBase
                         ? (carry = 0, base + addition)
                         : (carry = 1, base + addition - kBase);
@@ -44,16 +41,18 @@ string AddImpl(const string& larger, const string& smaller) noexcept
   return {reverse_res.rbegin(), reverse_res.rend()};
 }
 
-string SubtractImpl(const string& larger, const string& smaller) noexcept
+std::string StandardAlgorithmsImpl::Subtract(
+    const std::string& lhs, const std::string& rhs) const noexcept
 {
-  string reverse_res;
+  // consider lhs is larger than rhs
+  std::string reverse_res;
 
-  auto s_it = smaller.rbegin();
+  auto s_it = rhs.rbegin();
   int borrow{0};
 
-  for (auto l_it = larger.rbegin(); l_it != larger.rend(); ++l_it) {
+  for (auto l_it = lhs.rbegin(); l_it != lhs.rend(); ++l_it) {
     const int subtractor = ToDec(*l_it) - borrow;
-    const int subtracted = s_it != smaller.rend() ? ToDec(*s_it++) : 0;
+    const int subtracted = s_it != rhs.rend() ? ToDec(*s_it++) : 0;
     const int res = subtractor >= subtracted
                         ? (borrow = 0, subtractor - subtracted)
                         : (borrow = 1, subtractor + kBase - subtracted);
@@ -73,19 +72,21 @@ string SubtractImpl(const string& larger, const string& smaller) noexcept
   return {r_it, reverse_res.rend()};
 }
 
-string MultiplyImpl(const string& larger, const string& smaller) noexcept
+std::string StandardAlgorithmsImpl::Multiply(
+    const std::string& lhs, const std::string& rhs) const noexcept
 {
-  vector<string> additions;
-  additions.reserve(smaller.size());
+  // consider lhs is larger than rhs
+  std::vector<std::string> additions;
+  additions.reserve(rhs.size());
 
   int counter{0};
 
   // O(n*n)
-  for (auto s_it = smaller.rbegin(); s_it != smaller.rend(); ++s_it) {
+  for (auto s_it = rhs.rbegin(); s_it != rhs.rend(); ++s_it) {
     const int multiplier = ToDec(*s_it);
-    string tmp_res;
+    std::string tmp_res;
     int carry{0};
-    for (auto l_it = larger.rbegin(); l_it != larger.rend(); ++l_it) {
+    for (auto l_it = lhs.rbegin(); l_it != lhs.rend(); ++l_it) {
       const int res = ToDec(*l_it) * multiplier + carry;
       const int reminder =
           res < kBase ? (carry = 0, res) : (carry = res / kBase, res % kBase);
@@ -107,18 +108,18 @@ string MultiplyImpl(const string& larger, const string& smaller) noexcept
     ++counter;
   }
 
-  string res{additions[0]};
+  std::string res{additions[0]};
   for (size_t i = 1; i < additions.size(); ++i) {
-    res = AddImpl(additions[i], res);
+    res = Add(additions[i], res);
   }
 
   return res;
 }
 
-string DivideImpl(const string& lhs, const string& rhs) noexcept
-// UGLY
+std::string StandardAlgorithmsImpl::Divide(
+    const std::string& lhs, const std::string& rhs) const noexcept
 {
-  string res;
+  std::string res;
 
   // 1) find the fist number in lhs - lhs0 which is greter than of equal to rhs
   // 2) subtract from lhs0 rhs: rest = lhs0 - rhs. Continue untill rest > rhs
@@ -128,7 +129,7 @@ string DivideImpl(const string& lhs, const string& rhs) noexcept
   // 5) Discard rest if any
 
   auto l_it = lhs.begin();
-  string lhs0;
+  std::string lhs0;
 
   // Find the first number in lhs which is greater than or equal to rhs
   while (l_it != lhs.end() && !IsAbsGreaterOrEqual(lhs0, rhs)) {
@@ -139,7 +140,7 @@ string DivideImpl(const string& lhs, const string& rhs) noexcept
     // Find result
     int subtraction_count{0};
     while (IsAbsGreaterOrEqual(lhs0, rhs)) {
-      lhs0 = SubtractImpl(lhs0, rhs);
+      lhs0 = Subtract(lhs0, rhs);
       ++subtraction_count;
     }
     // clear, if we do not have reminder
@@ -159,12 +160,13 @@ string DivideImpl(const string& lhs, const string& rhs) noexcept
   return res;
 }
 
-string ReminderImpl(const string& lhs, const string& rhs) noexcept
+std::string StandardAlgorithmsImpl::Reminder(
+    const std::string& lhs, const std::string& rhs) const noexcept
 {
   // Currently just copy-paste division implementation with
   // some adjustments
   auto l_it = lhs.begin();
-  string lhs0;
+  std::string lhs0;
   while (l_it != lhs.end()) {
     if (lhs0 == "0") {
       lhs0.clear();
@@ -173,7 +175,7 @@ string ReminderImpl(const string& lhs, const string& rhs) noexcept
       lhs0 += *l_it++;
     }
     while (IsAbsGreaterOrEqual(lhs0, rhs)) {
-      lhs0 = SubtractImpl(lhs0, rhs);
+      lhs0 = Subtract(lhs0, rhs);
     }
   }
   return lhs0;
