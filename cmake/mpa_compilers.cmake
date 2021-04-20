@@ -1,20 +1,25 @@
-# configure compilers and appropriate options
+# Configure compilers and appropriate options
 set(MIN_GNU_COMP_VER 9.3.0)
 set(MIN_CLANG_COMP_VER 10.0.0)
 
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
-# consider all warnings
-set(MPA_WARNINGS "-Wall -Wextra")
+# Consider all warnings as errors
+if(MSVC)
+    set(MPA_WARNINGS "/WX /W4")
+else()
+    set(MPA_WARNINGS "-Werror -Wall -Wextra -Wconversion -Wsign-conversion")
+endif()
 
-# build types compiler options
+# Build types compiler options
 set(COVERAGE_COMPILER_FLAGS "--coverage")
-set(DEBUG_COMPILER_FLAGS "-g3 -O0")
-set(RELEASE_COMPILER_FLAGS "-O3")
 
-if(NOT ${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU"
-        AND NOT ${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang")
-    message(FATAL_ERROR "Unsupported compiler. Must be GNU CXX or Clang.")
+if(MSVC)
+    set(DEBUG_COMPILER_FLAGS "/Od")
+    set(RELEASE_COMPILER_FLAGS "/O2")
+else()
+    set(DEBUG_COMPILER_FLAGS "-g3 -O0")
+    set(RELEASE_COMPILER_FLAGS "-O3")
 endif()
 
 if(${CMAKE_CXX_COMPILER_ID} STREQUAL "GNU")

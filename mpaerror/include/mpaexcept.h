@@ -1,7 +1,8 @@
 #ifndef MPA_MPERROR_INCLUDE_MPAEXCEPT_H_
-#define MPA_MPABASE_INCLUDE_MPAEXCEPT_H_
+#define MPA_MPERROR_INCLUDE_MPAEXCEPT_H_
 
 #include <stdexcept>
+#include <string>
 
 namespace mpa {
 namespace error {
@@ -30,4 +31,4 @@ class DivisionByZero : public std::domain_error {
 }  // namespace error
 }  // namespace mpa
 
-#endif  // MPA_MPABASE_INCLUDE_MPAEXCEPT_H_
+#endif  // MPA_MPERROR_INCLUDE_MPAEXCEPT_H_

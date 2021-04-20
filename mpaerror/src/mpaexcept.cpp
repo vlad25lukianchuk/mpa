@@ -1,5 +1,7 @@
 #include "mpaexcept.h"
 
+#include <string>
+
 namespace mpa {
 namespace error {
 
