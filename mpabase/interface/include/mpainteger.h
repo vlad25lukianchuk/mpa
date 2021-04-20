@@ -1,5 +1,5 @@
-#ifndef MPA_MPABASE_SRC_MPAINTEGER_H_
-#define MPA_MPABASE_SRC_MPAINTEGER_H_
+#ifndef MPA_MPABASE_INTERFACE_INCLUDE_MPAINTEGER_H_
+#define MPA_MPABASE_INTERFACE_INCLUDE_MPAINTEGER_H_
 
 #include <iostream>
 #include <string>
@@ -128,4 +128,4 @@ inline std::istream& operator>>(std::istream& ist, Integer& number)
 
 }  // namespace mpa
 
-#endif  // MPA_MPABASE_SRC_MPAINTEGER_H_
+#endif  // MPA_MPABASE_INTERFACE_INCLUDE_MPAINTEGER_H_

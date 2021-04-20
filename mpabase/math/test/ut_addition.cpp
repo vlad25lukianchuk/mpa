@@ -2,59 +2,65 @@
 
 #include "mpamath.h"
 #include "mpanumber.h"
+#include "mpastandardalgorithmsimpl.h"
 
 using mpa::core::Number;
 using mpa::core::Sign;
 using mpa::math::Add;
-using mpa::math::impl::AddImpl;
+using mpa::math::impl::StandardAlgorithmsImpl;
 
-TEST(MpaAddImpl, DiffSizes)
+class MpaAddImplTest : public ::testing::Test {
+ protected:
+  StandardAlgorithmsImpl impl_;
+};
+
+TEST_F(MpaAddImplTest, DiffSizes)
 {
   const std::string larger{"123"};
   const std::string smaller{"12"};
-  EXPECT_EQ("135", AddImpl(larger, smaller));
+  EXPECT_EQ("135", impl_.Add(larger, smaller));
 }
 
-TEST(MpaAddImpl, SameSize)
+TEST_F(MpaAddImplTest, SameSize)
 {
   const std::string larger{"123"};
   const std::string smaller{"123"};
-  EXPECT_EQ("246", AddImpl(larger, smaller));
+  EXPECT_EQ("246", impl_.Add(larger, smaller));
 }
 
-TEST(MpaAddImpl, LargeNumbers)
+TEST_F(MpaAddImplTest, LargeNumbers)
 {
   const std::string larger{"10000000000000000000000000000000000"};
   const std::string smaller{"10000000000000000000000000000000000"};
-  EXPECT_EQ("20000000000000000000000000000000000", AddImpl(larger, smaller));
+  EXPECT_EQ("20000000000000000000000000000000000", impl_.Add(larger, smaller));
 }
 
-TEST(MpaAddImpl, AddZero)
+TEST_F(MpaAddImplTest, AddZero)
 {
   const std::string larger{"1234567890"};
   const std::string smaller{"0"};
-  EXPECT_EQ(larger, AddImpl(larger, smaller));
+  EXPECT_EQ(larger, impl_.Add(larger, smaller));
 }
 
-TEST(MpaAddImpl, AddZeroes)
+TEST_F(MpaAddImplTest, AddZeroes)
 {
   const std::string larger{"0"};
   const std::string smaller{"0"};
-  EXPECT_EQ(larger, AddImpl(larger, smaller));
+  EXPECT_EQ(larger, impl_.Add(larger, smaller));
 }
 
-TEST(MpaAddImpl, SameSizeResSizeIncreased)
+TEST_F(MpaAddImplTest, SameSizeResSizeIncreased)
 {
   const std::string larger{"999"};
   const std::string smaller{"999"};
-  EXPECT_EQ("1998", AddImpl(larger, smaller));
+  EXPECT_EQ("1998", impl_.Add(larger, smaller));
 }
 
-TEST(MpaAddImpl, DiffSizeResSizeIncreased)
+TEST_F(MpaAddImplTest, DiffSizeResSizeIncreased)
 {
   const std::string larger{"9999"};
   const std::string smaller{"999"};
-  EXPECT_EQ("10998", AddImpl(larger, smaller));
+  EXPECT_EQ("10998", impl_.Add(larger, smaller));
 }
 
 TEST(MpaAdd, EqSignEqValuePositive)

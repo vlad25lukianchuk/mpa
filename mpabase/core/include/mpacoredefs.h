@@ -3,6 +3,10 @@
 
 #include "mpanumber.h"
 
+// TODO: mb move to global module
+// Avoid "unused parameter" warnings
+#define MPA_UNUSED(x) (void)x;
+
 namespace mpa {
 namespace core {
 
