@@ -1,11 +1,8 @@
 #ifndef MPA_MPABASE_CORE_INCLUDE_MPACOREDEFS_H_
 #define MPA_MPABASE_CORE_INCLUDE_MPACOREDEFS_H_
 
+#include "mpacoreglobal.h"
 #include "mpanumber.h"
-
-// TODO: mb move to global module
-// Avoid "unused parameter" warnings
-#define MPA_UNUSED(x) (void)x;
 
 namespace mpa {
 namespace core {

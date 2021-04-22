@@ -4,11 +4,12 @@
 #include <iostream>
 #include <string>
 
+#include "mpainterfaceglobal.h"
 #include "mpanumber.h"
 
 namespace mpa {
 
-class Integer {
+class MPA_INTERFACE_EXPORT Integer {
  public:
   // TODO: Any other ctrs?
   explicit Integer(std::string number);
@@ -22,13 +23,18 @@ class Integer {
   Integer& operator++() noexcept;
   Integer& operator--() noexcept;
 
-  friend Integer operator-(const Integer&) noexcept;
-  friend bool operator==(const Integer& lhs, const Integer& rhs) noexcept;
-  friend bool operator>(const Integer& lhs, const Integer& rhs) noexcept;
-  friend bool operator<(const Integer& ohs, const Integer& rhs) noexcept;
+  friend MPA_INTERFACE_EXPORT Integer operator-(const Integer&) noexcept;
+  friend MPA_INTERFACE_EXPORT bool operator==(const Integer& lhs,
+                                              const Integer& rhs) noexcept;
+  friend MPA_INTERFACE_EXPORT bool operator>(const Integer& lhs,
+                                             const Integer& rhs) noexcept;
+  friend MPA_INTERFACE_EXPORT bool operator<(const Integer& ohs,
+                                             const Integer& rhs) noexcept;
 
-  friend std::ostream& operator<<(std::ostream& ost, const Integer& number);
-  friend std::istream& operator>>(std::istream& ost, Integer& number);
+  friend MPA_INTERFACE_EXPORT std::ostream& operator<<(std::ostream& ost,
+                                                       const Integer& number);
+  friend MPA_INTERFACE_EXPORT std::istream& operator>>(std::istream& ost,
+                                                       Integer& number);
 
   // TODO: conversion, literal operators?
 
@@ -37,91 +43,102 @@ class Integer {
   core::Number number_;
 };
 
-inline Integer operator+(Integer lhs, const Integer& rhs) noexcept
+MPA_INTERFACE_EXPORT inline Integer operator+(Integer lhs,
+                                              const Integer& rhs) noexcept
 {
   return lhs += rhs;
 }
 
-inline Integer operator-(Integer lhs, const Integer& rhs) noexcept
+MPA_INTERFACE_EXPORT inline Integer operator-(Integer lhs,
+                                              const Integer& rhs) noexcept
 {
   return lhs -= rhs;
 }
 
-inline Integer operator*(Integer lhs, const Integer& rhs) noexcept
+MPA_INTERFACE_EXPORT inline Integer operator*(Integer lhs,
+                                              const Integer& rhs) noexcept
 {
   return lhs *= rhs;
 }
 
-inline Integer operator/(Integer lhs, const Integer& rhs)
+MPA_INTERFACE_EXPORT inline Integer operator/(Integer lhs, const Integer& rhs)
 {
   return lhs /= rhs;
 }
 
-inline Integer operator%(Integer lhs, const Integer& rhs)
+MPA_INTERFACE_EXPORT inline Integer operator%(Integer lhs, const Integer& rhs)
 {
   return lhs %= rhs;
 }
 
-inline Integer operator++(Integer& lhs, int) noexcept
+MPA_INTERFACE_EXPORT inline Integer operator++(Integer& lhs, int) noexcept
 {
   Integer tmp{lhs};
   ++lhs;
   return tmp;
 }
 
-inline Integer operator--(Integer& lhs, int) noexcept
+MPA_INTERFACE_EXPORT inline Integer operator--(Integer& lhs, int) noexcept
 {
   Integer tmp{lhs};
   --lhs;
   return tmp;
 }
 
-inline Integer operator-(const Integer& rhs) noexcept
+MPA_INTERFACE_EXPORT inline Integer operator-(const Integer& rhs) noexcept
 {
   return Integer{-rhs.number_};
 }
 
-inline Integer operator+(const Integer& rhs) noexcept
+MPA_INTERFACE_EXPORT inline Integer operator+(const Integer& rhs) noexcept
 {
   return rhs;
 }
 
-inline bool operator==(const Integer& lhs, const Integer& rhs) noexcept
+MPA_INTERFACE_EXPORT inline bool operator==(const Integer& lhs,
+                                            const Integer& rhs) noexcept
 {
   return lhs.number_ == rhs.number_;
 }
 
-inline bool operator!=(const Integer& lhs, const Integer& rhs) noexcept
+MPA_INTERFACE_EXPORT inline bool operator!=(const Integer& lhs,
+                                            const Integer& rhs) noexcept
 {
   return !(lhs == rhs);
 }
 
-inline bool operator>(const Integer& lhs, const Integer& rhs) noexcept
+MPA_INTERFACE_EXPORT inline bool operator>(const Integer& lhs,
+                                           const Integer& rhs) noexcept
 {
   return lhs.number_ > rhs.number_;
 }
 
-inline bool operator<(const Integer& lhs, const Integer& rhs) noexcept
+MPA_INTERFACE_EXPORT inline bool operator<(const Integer& lhs,
+                                           const Integer& rhs) noexcept
 {
   return lhs.number_ < rhs.number_;
 }
 
-inline bool operator>=(const Integer& lhs, const Integer& rhs) noexcept
+MPA_INTERFACE_EXPORT inline bool operator>=(const Integer& lhs,
+                                            const Integer& rhs) noexcept
 {
   return !(lhs < rhs);
 }
 
-inline bool operator<=(const Integer& lhs, const Integer& rhs) noexcept
+MPA_INTERFACE_EXPORT inline bool operator<=(const Integer& lhs,
+                                            const Integer& rhs) noexcept
 {
   return !(lhs > rhs);
 }
 
-inline std::ostream& operator<<(std::ostream& ost, const Integer& number)
+MPA_INTERFACE_EXPORT inline std::ostream& operator<<(std::ostream& ost,
+                                                     const Integer& number)
 {
   return ost << number.number_;
 }
 
-inline std::istream& operator>>(std::istream& ist, Integer& number)
+MPA_INTERFACE_EXPORT inline std::istream& operator>>(std::istream& ist,
+                                                     Integer& number)
 {
   return ist >> number.number_;
 }

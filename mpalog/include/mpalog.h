@@ -3,12 +3,27 @@
 
 #include <iostream>
 
+#ifdef _WIN32
+#ifdef MPA_BUILD_LOG_LIB
+#define MPA_LOG_EXPORT __declspec(dllexport)
+#else
+#define MPA_LOG_EXPORT __declspec(dllimport)
+#endif
+#else
+#define MPA_LOG_EXPORT
+#endif
+
 namespace mpa {
 namespace log {
 
-enum class MessageType { kDebug, kInfo, kWarning, kNotImplemented };
+enum class MPA_LOG_EXPORT MessageType {
+  kDebug,
+  kInfo,
+  kWarning,
+  kNotImplemented
+};
 
-std::ostream& LogMessage(MessageType msg_type);
+MPA_LOG_EXPORT std::ostream& LogMessage(MessageType msg_type);
 
 }  // namespace log
 }  // namespace mpa
