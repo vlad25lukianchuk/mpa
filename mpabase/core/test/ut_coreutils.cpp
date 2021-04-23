@@ -11,11 +11,11 @@ namespace char_interface {
 constexpr std::array<char, 10> digits{'0', '1', '2', '3', '4',
                                       '5', '6', '7', '8', '9'};
 // Silence warning (int and unsigned long comparison)
-constexpr int digits_size = digits.size();
+constexpr size_t digits_size = digits.size();
 
 constexpr std::array<char, 10> not_digits{'a', '!', '#', '$', -100,
                                           '%', 'A', '*', '/', '\\'};
-constexpr int not_digits_size = not_digits.size();
+constexpr size_t not_digits_size = not_digits.size();
 
 }  // namespace char_interface
 
@@ -24,7 +24,7 @@ namespace int_interface {
 constexpr std::array<int, 10> digits{0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
 
 constexpr std::array<int, 6> not_digits{10, -2, 0x33, 1 << 4, 10000, -100};
-constexpr int not_digits_size = not_digits.size();
+constexpr size_t not_digits_size = not_digits.size();
 
 }  // namespace int_interface
 
@@ -64,8 +64,8 @@ TEST(MpaCoreUtils, ToChar_ValidInput)
 {
   using char_interface::digits;
   using char_interface::digits_size;
-  for (int i = 0; i < digits_size; ++i) {
-    EXPECT_EQ(digits[i], mpa::core::ToChar(i));
+  for (size_t i = 0; i < digits_size; ++i) {
+    EXPECT_EQ(digits[i], mpa::core::ToChar(static_cast<int>(i)));
   }
 }
 
@@ -73,7 +73,7 @@ TEST(MpaCoreUtils, ToChar_InvalidInput)
 {
   using int_interface::not_digits;
   using int_interface::not_digits_size;
-  for (int i = 0; i < not_digits_size; ++i) {
+  for (size_t i = 0; i < not_digits_size; ++i) {
     // static cast needed for safe use of isdigit
     // https://en.cppreference.com/w/cpp/string/byte/isdigit
     EXPECT_FALSE(
@@ -85,7 +85,7 @@ TEST(MpaCoreUtils, ToDec_ValidInput)
 {
   using char_interface::digits;
   using char_interface::digits_size;
-  for (int i = 0; i < digits_size; ++i) {
+  for (size_t i = 0; i < digits_size; ++i) {
     EXPECT_EQ(i, mpa::core::ToDec(digits[i]));
   }
 }
@@ -94,7 +94,7 @@ TEST(MpaCoreUtils, ToDec_InvalidInput)
 {
   using char_interface::not_digits;
   using char_interface::not_digits_size;
-  for (int i = 0; i < not_digits_size; ++i) {
+  for (size_t i = 0; i < not_digits_size; ++i) {
     const int not_digit = mpa::core::ToDec(not_digits[i]);
     EXPECT_FALSE(not_digit >= 0 && not_digit <= 9);
   }

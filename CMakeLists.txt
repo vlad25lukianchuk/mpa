@@ -1,13 +1,13 @@
 cmake_minimum_required(VERSION 3.15 FATAL_ERROR)
 
-# set the project name
+# Set the project name
 project(mpa LANGUAGES CXX)
 
-# specify the C++ standard
+# Specify the C++ standard
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-# specify root dir, add cmake modules to path
+# Apecify root dir, add cmake modules to path
 set(MPA_ROOT_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 list(APPEND CMAKE_MODULE_PATH ${MPA_ROOT_DIR}/cmake)
 

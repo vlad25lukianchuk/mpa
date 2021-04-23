@@ -5,7 +5,7 @@ add_library(mpalog_object OBJECT src/mpalogbase.cpp
 target_include_directories(mpalog_object PUBLIC src)
 
 mpa_add_shared_library(
-    NAME mpalog
+    NAME log
     TARGET_SOURCES src/mpalog.cpp
     PRIVATE_LINK_LIB mpalog_object
     PUBLIC_INCL include

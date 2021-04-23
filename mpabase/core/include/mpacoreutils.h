@@ -3,6 +3,8 @@
 
 #include <string>
 
+#include "mpacoreglobal.h"
+
 namespace mpa {
 namespace core {
 
@@ -38,17 +40,21 @@ constexpr int ToDec(char chr) noexcept
   return chr - kAsciiDigitStart;
 }
 
-bool IsAbsGreater(const std::string& lhs, const std::string& rhs) noexcept;
-bool IsAbsLess(const std::string& lhs, const std::string& rhs) noexcept;
-bool IsAbsGreaterOrEqual(const std::string& lhs,
-                         const std::string& rhs) noexcept;
-bool IsAbsLessOrEqual(const std::string& lhs, const std::string& rhs) noexcept;
-bool IsAbsEqual(const std::string& lhs, const std::string& rhs) noexcept;
-bool IsNegative(const std::string& number) noexcept;
-bool IsPositive(const std::string& number) noexcept;
-bool HasNonDigitSymbol(const std::string& value) noexcept;
-bool HasPlusSignAtFront(const std::string& number) noexcept;
-void ClearLeadingZeroes(std::string& number) noexcept;
+MPA_CORE_EXPORT bool IsAbsGreater(const std::string& lhs,
+                                  const std::string& rhs) noexcept;
+MPA_CORE_EXPORT bool IsAbsLess(const std::string& lhs,
+                               const std::string& rhs) noexcept;
+MPA_CORE_EXPORT bool IsAbsGreaterOrEqual(const std::string& lhs,
+                                         const std::string& rhs) noexcept;
+MPA_CORE_EXPORT bool IsAbsLessOrEqual(const std::string& lhs,
+                                      const std::string& rhs) noexcept;
+MPA_CORE_EXPORT bool IsAbsEqual(const std::string& lhs,
+                                const std::string& rhs) noexcept;
+MPA_CORE_EXPORT bool IsNegative(const std::string& number) noexcept;
+MPA_CORE_EXPORT bool IsPositive(const std::string& number) noexcept;
+MPA_CORE_EXPORT bool HasNonDigitSymbol(const std::string& value) noexcept;
+MPA_CORE_EXPORT bool HasPlusSignAtFront(const std::string& number) noexcept;
+MPA_CORE_EXPORT void ClearLeadingZeroes(std::string& number) noexcept;
 
 }  // namespace core
 }  // namespace mpa
