@@ -1,118 +1,99 @@
 #!/bin/bash
 
-# This script formats all sources and headers in the corresponding mpa repo
-# according to defined style
-# By default it performs formatting and output changes into the standard
-# output. The '--edit' parameter allowes to perform and apply changes to the
+# This helper script check code style of all sources and headers in the
+# corresponding repo and prints any code style violations into the standard
+# error output.
+#
+# The '--edit' parameter allows to format and apply changes to the
 # files in place.
 
 function do_format() {
-  # Perform formatting using provided command. It assumes the
-  # common source tree structure, such as that contains src/ and
-  # include/ directories
+  # Perform formatting using provided command.
   #
-  # $1 must be a valid command: installed and available in $PATH
-  # $2 must be a valid path to the module with source files
-  # both parameters must not be empty strings
+  # $1 must be a valid path to source file
 
-  local cmd="$1"
-  shift
-  local m_path="$*"
-
-  if [[ -d "${m_path}/src" ]]; then
-    # assume that if src dir exists, then appropriate
-    # inlcude should exists as well
-    for path in "${m_path}/src" "${m_path}/include"; do
-      local files="${files} ${path}/*"
-    done
-  else
-    names=$(ls "${m_path}" | grep -P ".*.cpp|.*.h")
-    for name in ${names}; do
-      local files="${files} ${m_path}/${name}"
-    done
-  fi
-
-  for file in ${files}; do
-    echo "Processing file: ${file}"
-    ${cmd} ${file}
-  done
-}
-
-function format() {
-  # Checks arguments, and perform formatting via do_format
-  #
-  # $1 must be a valid command: installed and available in $PATH
-  # $2 must be a list of paths to the module whith source files
-  # to be formatted
-
-  cmd="$1"
-  if [[ -z "${cmd}" ]]; then
-    echo "Error: format command is not provided."
+  local file="$1"
+  if [[ -z "${file}" ]]; then
+    echo "Error: file path is not provided."
     exit 1
   fi
 
-  shift
-  modules="$*"
-  if [[ -z "${modules}" ]]; then
-    echo "Error: modules paths are not provided."
+  # unfortunate call - to determine if the file has code-style errors
+  errors=$(${format_error_cmd} ${file} 2>&1)
+  local format_status="$?"
+
+  if [[ ${format_status} -ne 0 ]]; then
+    has_errors=1
+    if [[ ${dry_run} -eq 0 ]]; then
+      echo "Processing file: ${file}"
+      ${format_edit_cmd} ${file}
+    else
+      ${format_error_cmd} ${file}
+    fi
   fi
 
-  for module in ${modules}; do
-    arg=("${cmd}" "${module}")
-    do_format "${arg[@]}"
-  done
+  return 0
 }
 
 function print_help() {
   echo "Usage: $0 [--edit] [--help]"
-  echo "Formal sources according to the defined style and print result to" \
-    "the standard output"
+  echo "Process source files and check according to the defined code style." \
+       "Print results to the standard output."
   echo
   echo "Optional arguments:"
   echo "  --help - print this help and exit"
-  echo "  --edit - format and edit files"
+  echo "  --edit - process and edit files in place"
 }
 
 srcpath=$(dirname $0)
 srcpath=$(cd "$scrpath"; pwd)
-format_cmd="clang-format" # format command
-format_edit_cmd="clang-format -i" # format with edit in place
+format_error_cmd="clang-format -n --Werror --style=file" # do not edit, but show as errors
+format_edit_cmd="clang-format -i --style=file"           # format with edit in place
+dry_run=1    # dry run by default
+has_errors=0 # no code-style violations
 
-# modules to be processed
-# TODO: some new modules does not have
-# appropriate structure yet, thus should be excluded explicitly
-# mpa_modules=$(ls ${repo_path} | grep -P "mpa.*")
-# TODO: workaround, make it recursive
-mpa_modules="mpabase/core mpabase/interface mpabase/math mpalog \
-    mpabase/core/test mpabase/interface/test mpabase/math/test mpalog/test \
-    mpaerror mpabase/tools"
-other_modules="examples"
-
-for module in ${mpa_modules} ${other_modules}; do
-  modules_paths="${modules_paths} ${srcpath}/${module}"
-done
+# find all C/C++ files:
+#   h, H, hpp, hh, h++, hxx
+#   c, C, cpp, cc, c++, cxx
+cpp_files=$(find "${srcpath}" | grep -E '\.((c|C)c?(pp|xx|\+\+)*$|(h|H)h?(pp|xx|\+\+)*$)')
+exclude_regex=external
 
 case "$1" in
   --help )
     print_help
     exit 0;;
   --edit )
-    cmd=("${format_edit_cmd}");;
+    dry_run=0;;
   * )
-    cmd=("${format_cmd}");;
+    dry_run=1;;
 esac
 
-format "${cmd[@]}" ${modules_paths}
+for file in ${cpp_files}; do
+  if ! [[ ${file} =~ ${exclude_regex} ]]; then
+    do_format ${file}
+  fi
+done
 
-if [[ $? -eq 0 ]]; then
-  echo "********************************"
-  echo "Files are successfully formatted"
-  echo "********************************"
+if [[ ${dry_run} -eq 1 ]]; then
+  if [[ ${has_errors} -ne 0 ]]; then
+    echo "********************************"
+    echo "Files processing finished. Code style errors found."
+    echo "********************************"
+  else
+    echo "********************************"
+    echo "Files processing finished. No errors found."
+    echo "********************************"
+  fi
 else
-  echo "********************************"
-  echo "Errors occured while formatting files"
-  echo "********************************"
-  exit 1
+  if [[ ${has_errors} -ne 0 ]]; then
+    echo "********************************"
+    echo "Files are successfully formatted"
+    echo "********************************"
+  else
+    echo "********************************"
+    echo "No code style violations found."
+    echo "********************************"
+  fi
 fi
 
 exit 0
