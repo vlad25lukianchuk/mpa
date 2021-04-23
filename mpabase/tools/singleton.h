@@ -3,10 +3,11 @@
 
 namespace mpa {
 
-template<typename T>
+template <typename T>
 class Singleton {
  public:
-  static T&  Instance() {
+  static T& Instance()
+  {
     static T instance;
     return instance;
   }
@@ -20,6 +21,6 @@ class Singleton {
   Singleton() = default;
 };
 
-} // namespace mpa
+}  // namespace mpa
 
-#endif // MPA_MPABASE_TOOLS_SINGLETON_H_
+#endif  // MPA_MPABASE_TOOLS_SINGLETON_H_

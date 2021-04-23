@@ -23,14 +23,10 @@ class MPA_CORE_EXPORT Number {
 
   friend MPA_CORE_EXPORT Number operator-(const Number&) noexcept;
   friend MPA_CORE_EXPORT Number operator-(Number&&) noexcept;
-  friend MPA_CORE_EXPORT bool operator==(const Number&,
-                                         const Number&) noexcept;
-  friend MPA_CORE_EXPORT bool operator>(const Number&,
-                                        const Number&) noexcept;
-  friend MPA_CORE_EXPORT bool operator<(const Number&,
-                                        const Number&) noexcept;
-  friend MPA_CORE_EXPORT std::ostream& operator<<(std::ostream&,
-                                                  const Number&);
+  friend MPA_CORE_EXPORT bool operator==(const Number&, const Number&) noexcept;
+  friend MPA_CORE_EXPORT bool operator>(const Number&, const Number&) noexcept;
+  friend MPA_CORE_EXPORT bool operator<(const Number&, const Number&) noexcept;
+  friend MPA_CORE_EXPORT std::ostream& operator<<(std::ostream&, const Number&);
   friend MPA_CORE_EXPORT std::istream& operator>>(std::istream&, Number&);
 
  private:
