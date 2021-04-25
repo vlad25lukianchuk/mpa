@@ -4,7 +4,9 @@ include(CTest)
 if(${BUILD_TESTING})
     # Prevent overriding the parent project's compiler/linker
     # settings on Windows
-    set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+    if(WIN32)
+        set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+    endif()
 
     # Add google test to project. This defines
     # the gtest and gtest_main targets.

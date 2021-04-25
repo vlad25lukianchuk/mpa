@@ -44,7 +44,7 @@ Number VerifyNumber(string&& number)
   }
 
   if (HasNonDigitSymbol(value)) {
-    throw mpa::error::InvalidNumber{"Number: " + number +
+    throw mpa::error::InvalidNumber{"Value: " + value +
                                     " contains non-digit symbols"};
   }
 
