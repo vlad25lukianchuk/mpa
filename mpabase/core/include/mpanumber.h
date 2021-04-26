@@ -103,8 +103,9 @@ MPA_CORE_EXPORT inline bool operator<=(const Number& lhs,
 MPA_CORE_EXPORT inline std::ostream& operator<<(std::ostream& ost,
                                                 const Number& number)
 {
-  return number.sign_ == Sign::kMinus ? ost << '-' << number.value_
-                                      : ost << number.value_;
+  return number.sign_ == Sign::kMinus && number.value_ != "0"
+             ? ost << '-' << number.value_
+             : ost << number.value_;
 }
 
 MPA_CORE_EXPORT std::istream& operator>>(std::istream& ist, Number&);
